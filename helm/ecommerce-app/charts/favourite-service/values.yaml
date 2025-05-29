@@ -1,0 +1,83 @@
+# Default values for favourite-service
+replicaCount: 1
+
+image:
+  repository: favourite-service
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8800
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+environment:
+  - name: SERVER_PORT
+    value: "8800"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: "/favourite-service"
+
+livenessProbe:
+  httpGet:
+    path: /favourite-service/actuator/health
+    port: 8800
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /favourite-service/actuator/health
+    port: 8800
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /favourite-service/actuator/health
+    port: 8800
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# Autoscaling configuration
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+# Security Context
+podSecurityContext: {}
+securityContext: {}
+
+# Node selection
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Service specific environment variables
+serviceEnv: []
+
+# Service Monitor for Prometheus
+serviceMonitor:
+  enabled: false
+  additionalLabels: {}
+  interval: 30s
+  scrapeTimeout: 10s

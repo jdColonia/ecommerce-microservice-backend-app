@@ -1,0 +1,96 @@
+# Development environment specific values
+global:
+  environment: dev
+  imagePullPolicy: IfNotPresent
+  imageTag: latest
+  
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: ecommerce-dev.local
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: api-gateway
+              port:
+                number: 8222
+  tls: []
+
+# Service specific overrides for dev environment
+zipkin:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+      
+service-discovery:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+      
+cloud-config:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+      
+api-gateway:
+  enabled: true
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+      
+order-service:
+  enabled: true
+  replicaCount: 1
+  
+payment-service:
+  enabled: true
+  replicaCount: 1
+  
+product-service:
+  enabled: true
+  replicaCount: 1
+  
+shipping-service:
+  enabled: true
+  replicaCount: 1
+  
+user-service:
+  enabled: true
+  replicaCount: 1
+  
+favourite-service:
+  enabled: true
+  replicaCount: 1
+  
+proxy-client:
+  enabled: true
+  replicaCount: 1

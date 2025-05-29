@@ -1,0 +1,27 @@
+# Archivos y carpetas generales
+README.md
+*.md
+*.txt
+*.sh
+*.log
+*.bak
+*.backup
+*.tmp
+*.swp
+
+# Archivos de configuración local
+values.local.yaml
+.env
+.env.*
+
+# IDEs y sistema
+.vscode/
+.idea/
+.DS_Store
+*.iml
+
+# Archivos de salida o temporales
+output/
+build/
+dist/
+*.tgz

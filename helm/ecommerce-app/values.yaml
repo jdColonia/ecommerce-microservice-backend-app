@@ -1,0 +1,92 @@
+# Global values for all charts
+global:
+  environment: dev
+  imagePullPolicy: IfNotPresent
+  imageTag: latest
+  namespace: ecommerce
+  
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+  hosts:
+    - host: ecommerce.local
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: api-gateway
+              port:
+                number: 8222
+  tls: []
+
+# ConfigMap para configuraciones comunes
+configMap:
+  data:
+    EUREKA_INSTANCE_HOSTNAME: "service-discovery"
+    ZIPKIN_BASE_URL: "http://zipkin:9411/"
+    CONFIG_SERVER_URL: "http://cloud-config:9296/"
+
+# Service Account
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# Override specific values for each service
+zipkin:
+  enabled: true
+  
+service-discovery:
+  enabled: true
+  
+cloud-config:
+  enabled: true
+  
+api-gateway:
+  enabled: true
+  
+order-service:
+  enabled: true
+  
+payment-service:
+  enabled: true
+  
+product-service:
+  enabled: true
+  
+shipping-service:
+  enabled: true
+  
+user-service:
+  enabled: true
+  
+favourite-service:
+  enabled: true
+  
+proxy-client:
+  enabled: true
+
+# Default configurations for all services
+defaults:
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+  
+  podDisruptionBudget:
+    enabled: false
+    minAvailable: 1
+    
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi

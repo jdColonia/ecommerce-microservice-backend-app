@@ -1,0 +1,83 @@
+# Default values for product-service
+replicaCount: 1
+
+image:
+  repository: product-service
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8500
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+environment:
+  - name: SERVER_PORT
+    value: "8500"
+  - name: SERVER_SERVLET_CONTEXT_PATH
+    value: "/product-service"
+
+livenessProbe:
+  httpGet:
+    path: /product-service/actuator/health
+    port: 8500
+  initialDelaySeconds: 120
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /product-service/actuator/health
+    port: 8500
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /product-service/actuator/health
+    port: 8500
+  initialDelaySeconds: 60
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+
+# Autoscaling configuration
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+# Pod Disruption Budget
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+# Security Context
+podSecurityContext: {}
+securityContext: {}
+
+# Node selection
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Service specific environment variables
+serviceEnv: []
+
+# Service Monitor for Prometheus
+serviceMonitor:
+  enabled: false
+  additionalLabels: {}
+  interval: 30s
+  scrapeTimeout: 10s

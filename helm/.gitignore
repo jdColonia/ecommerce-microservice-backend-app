@@ -1,0 +1,48 @@
+# Archivos temporales del sistema
+*.swp
+*.bak
+*.tmp
+*.log
+*.backup
+
+# Archivos de Helm generados
+*.tgz
+.chart-release
+charts/**/charts/
+charts/**/tmpcharts/
+
+# Archivos de configuración específicos del usuario
+values.local.yaml
+.env
+.env.*
+
+# Archivos de salida del entorno
+*.out
+*.err
+
+# Archivos de estado de Minikube (por si se guardan por error)
+minikube/
+
+# Carpetas de salida de builds (si existiera alguna)
+dist/
+build/
+output/
+
+# Archivos generados por ejecución de scripts
+*.status
+*.cache
+*.pid
+
+# Editor/IDE
+.vscode/
+.idea/
+*.iml
+.DS_Store
+
+# Bash history
+.bash_history
+
+# Terraform o Docker si se usan en el futuro
+.terraform/
+*.tfstate
+*.tfstate.*

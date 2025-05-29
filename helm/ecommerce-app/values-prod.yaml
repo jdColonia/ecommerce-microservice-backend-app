@@ -1,0 +1,87 @@
+# Production environment specific values
+global:
+  environment: prod
+  imagePullPolicy: Always
+  imageTag: latest
+  
+ingress:
+  enabled: true
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  hosts:
+    - host: ecommerce.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: api-gateway
+              port:
+                number: 8222
+  tls:
+    - secretName: ecommerce-tls
+      hosts:
+        - ecommerce.example.com
+
+# Service specific overrides for prod environment
+zipkin:
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 400m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+      
+service-discovery:
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 400m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+      
+cloud-config:
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 400m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+      
+api-gateway:
+  replicaCount: 3
+  resources:
+    requests:
+      cpu: 400m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+      
+order-service:
+  replicaCount: 3
+  
+payment-service:
+  replicaCount: 3
+  
+product-service:
+  replicaCount: 3
+  
+shipping-service:
+  replicaCount: 3
+  
+user-service:
+  replicaCount: 3
+  
+favourite-service:
+  replicaCount: 3
+  
+proxy-client:
+  replicaCount: 3

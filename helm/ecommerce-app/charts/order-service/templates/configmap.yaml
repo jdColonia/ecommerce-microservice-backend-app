@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "order-service.fullname" . }}-config
+  labels:
+    {{- include "order-service.labels" . | nindent 4 }}
+data:
+  application.yml: |
+    server:
+      port: {{ .Values.service.port }}
+    spring:
+      application:
+        name: {{ .Chart.Name | upper }}
+      profiles:
+        active: {{ .Values.global.environment | default "dev" }}
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: "*"
+      endpoint:
+        health:
+          show-details: always
+    eureka:
+      client:
+        service-url:
+          defaultZone: http://{{ .Release.Name }}-service-discovery:8761/eureka/
+    zipkin:
+      base-url: http://{{ .Release.Name }}-zipkin:9411/

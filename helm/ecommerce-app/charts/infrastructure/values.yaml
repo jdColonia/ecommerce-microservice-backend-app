@@ -1,0 +1,9 @@
+# Infrastructure services
+zipkin:
+  enabled: true
+  
+service-discovery:
+  enabled: true
+  
+cloud-config:
+  enabled: true

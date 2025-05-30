@@ -1,4 +1,3 @@
-
 server:
   servlet:
     context-path: /
@@ -12,7 +11,7 @@ spring:
     name: API-GATEWAY
   profiles:
     active:
-    - dev
+      - dev
   cloud:
     gateway:
       default-filters:
@@ -21,11 +20,11 @@ spring:
         add-to-simple-url-handler-mapping: true
         cors-configurations:
           '[/**]':
-            allowed-origins: "${CLIENT_HOST:http://localhost:4200}"
-            allowed-headers: "*"
-            exposed-headers: "*"
+            allowed-origin-patterns: '*'
+            allowed-headers: '*'
+            exposed-headers: '*'
             allow-credentials: true
-            allowed-methods: 
+            allowed-methods:
               - GET
               - POST
               - PUT
@@ -33,34 +32,34 @@ spring:
               - PATCH
               - OPTIONS
       routes:
-      - id: ORDER-SERVICE
-        uri: lb://ORDER-SERVICE
-        predicates:
-        - Path=/order-service/**
-      - id: PAYMENT-SERVICE
-        uri: lb://PAYMENT-SERVICE
-        predicates:
-        - Path=/payment-service/**
-      - id: PRODUCT-SERVICE
-        uri: lb://PRODUCT-SERVICE
-        predicates:
-        - Path=/product-service/**
-      - id: SHIPPING-SERVICE
-        uri: lb://SHIPPING-SERVICE
-        predicates:
-        - Path=/shipping-service/**
-      - id: USER-SERVICE
-        uri: lb://USER-SERVICE
-        predicates:
-        - Path=/user-service/**
-      - id: FAVOURITE-SERVICE
-        uri: lb://FAVOURITE-SERVICE
-        predicates:
-        - Path=/favourite-service/**
-      - id: PROXY-CLIENT
-        uri: lb://PROXY-CLIENT
-        predicates:
-        - Path=/app/**
+        - id: ORDER-SERVICE
+          uri: lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
+        - id: PAYMENT-SERVICE
+          uri: lb://PAYMENT-SERVICE
+          predicates:
+            - Path=/payment-service/**
+        - id: PRODUCT-SERVICE
+          uri: lb://PRODUCT-SERVICE
+          predicates:
+            - Path=/product-service/**
+        - id: SHIPPING-SERVICE
+          uri: lb://SHIPPING-SERVICE
+          predicates:
+            - Path=/shipping-service/**
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/user-service/**
+        - id: FAVOURITE-SERVICE
+          uri: lb://FAVOURITE-SERVICE
+          predicates:
+            - Path=/favourite-service/**
+        - id: PROXY-CLIENT
+          uri: lb://PROXY-CLIENT
+          predicates:
+            - Path=/app/**
 
 resilience4j:
   circuitbreaker:
@@ -83,13 +82,3 @@ management:
   endpoint:
     health:
       show-details: always
-
-
-
-
-
-
-
-
- 
- 

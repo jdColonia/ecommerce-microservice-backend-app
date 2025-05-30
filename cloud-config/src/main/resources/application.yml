@@ -1,4 +1,3 @@
-
 server:
   port: 9296
 
@@ -11,7 +10,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/SelimHorri/cloud-config-server
+          uri: https://github.com/jdColonia/cloud-config-server
           clone-on-start: true
 
 resilience4j:
@@ -32,18 +31,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: '*'
   health:
     circuitbreakers:
       enabled: true
   endpoint:
     health:
       show-details: always
-
-
-
-
-
-
-
-

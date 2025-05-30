@@ -21,6 +21,7 @@
 	</properties>
 	
 	<dependencies>
+		<!-- === DEPENDENCIAS PRINCIPALES DEL CONFIG SERVER === -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
@@ -33,26 +34,36 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter</artifactId>
 		</dependency>
+		
+		<!-- === DEPENDENCIAS DE TESTING ESPECÍFICAS DEL CONFIG SERVER === -->		
+		<!-- Spring Cloud Config Test - Para testing de configuraciones -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-config-client</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Spring Boot Starter Web para testing endpoints REST -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Git para testing con repositorios Git locales -->
+		<dependency>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- TestContainers para Git Server si es necesario -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.testcontainers</groupId>
-				<artifactId>testcontainers-bom</artifactId>
-				<version>${testcontainers.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	
 	<build>
 		<plugins>
@@ -60,13 +71,46 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<spring.profiles.active>test</spring.profiles.active>
+						<!-- Desactivar servicios externos durante pruebas -->
+						<eureka.client.enabled>false</eureka.client.enabled>
+						<!-- Usar repositorio local para testing -->
+						<spring.cloud.config.server.git.uri>file://./config-repo</spring.cloud.config.server.git.uri>
+						<spring.cloud.config.server.git.clone-on-start>false</spring.cloud.config.server.git.clone-on-start>
+					</systemPropertyVariables>
+					<!-- Configurar directorio de trabajo para pruebas -->
+					<workingDirectory>${project.build.directory}</workingDirectory>
+				</configuration>
+			</plugin>
+			<!-- Plugin para crear repositorio Git de prueba -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-test-configs</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/config-repo</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/test/resources/config-repo</directory>
+									<filtering>false</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<finalName>${project.artifactId}-v${project.version}</finalName>
 	</build>
-	
 </project>
-
-
-
-
-

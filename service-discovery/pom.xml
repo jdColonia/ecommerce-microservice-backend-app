@@ -20,23 +20,48 @@
 	</properties>
 	
 	<dependencies>
+		<!-- === DEPENDENCIA PRINCIPAL DEL EUREKA SERVER === -->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
+		
+		<!-- === DEPENDENCIAS DE TESTING ESPECÍFICAS DEL EUREKA SERVER === -->
+		<!-- Eureka Client para testing de registro de servicios -->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Web Starter para testing de endpoints REST del dashboard -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- WebTestClient para testing de APIs reactivas -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webflux</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- Para testing de métricas de Eureka -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- TestContainers para testing de múltiples instancias Eureka -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
-	
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>${spring-cloud.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	
 	<build>
 		<plugins>
@@ -44,13 +69,53 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<systemPropertyVariables>
+						<spring.profiles.active>test</spring.profiles.active>
+						<!-- Configuración específica para testing de Eureka -->
+						<eureka.client.register-with-eureka>false</eureka.client.register-with-eureka>
+						<eureka.client.fetch-registry>false</eureka.client.fetch-registry>
+						<eureka.server.enable-self-preservation>false</eureka.server.enable-self-preservation>
+						<eureka.server.renewal-percent-threshold>0.85</eureka.server.renewal-percent-threshold>
+						<!-- Configuración de red para pruebas -->
+						<server.port>0</server.port>
+						<eureka.instance.hostname>localhost</eureka.instance.hostname>
+					</systemPropertyVariables>
+					<!-- Aumentar timeout para testing de Eureka -->
+					<forkedProcessTimeoutInSeconds>300</forkedProcessTimeoutInSeconds>
+				</configuration>
+			</plugin>
+			<!-- Plugin para generar datos de prueba de servicios registrados -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-test-data</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/test-classes</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/test/resources</directory>
+									<filtering>true</filtering>
+									<includes>
+										<include>**/*.yml</include>
+										<include>**/*.properties</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 		<finalName>${project.artifactId}-v${project.version}</finalName>
 	</build>
-	
 </project>
-
-
-
-
-

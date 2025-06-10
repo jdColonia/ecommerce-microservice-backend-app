@@ -4,123 +4,62 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
+	<!-- Parent Configuration -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.7</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
+	
+	<!-- Project Information -->
 	<groupId>com.selimhorri</groupId>
 	<artifactId>ecommerce-microservice-backend</artifactId>
 	<version>0.1.0</version>
 	<name>ecommerce-microservice-backend</name>
-	<description>Ecommerce backend implemented in Spring Boot and Spring Cloud!</description>
+	<description>Ecommerce backend implemented in Spring Boot and Spring Cloud</description>
 	<packaging>pom</packaging>
-	
+
+	<!-- Build Properties -->
 	<properties>
-		<!-- Versiones base del framework -->
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.4</spring-cloud.version>
-		
-		<!-- Versiones de testing y herramientas de calidad -->
 		<testcontainers.version>1.16.0</testcontainers.version>
 		<jacoco.version>0.8.7</jacoco.version>
-		
-		<!-- Versiones de plugins de Maven para testing -->
 		<maven.surefire.version>3.0.0-M7</maven.surefire.version>
 		<maven.failsafe.version>3.0.0-M7</maven.failsafe.version>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	
-	<dependencies>
-		<!-- === DEPENDENCIAS PRINCIPALES === -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-		</dependency>
+
+	<!-- Distribution Management -->
+	<distributionManagement>
+		<repository>
+			<id>ecommerce-pom-releases</id>
+			<url>https://maven.pkg.github.com/EcommerceCoZam/ecommerce-parent</url>
+		</repository>
+	</distributionManagement>
+
+	<!-- Project Modules -->
+	<modules>
+		<!-- Infrastructure Services -->
+		<module>service-discovery</module>
+		<module>cloud-config</module>
+		<module>api-gateway</module>
+		<module>proxy-client</module>
 		
-		<!-- === MONITOREO Y OBSERVABILIDAD === -->
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
-		</dependency>
-		
-		<!-- === DESARROLLO === -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-configuration-processor</artifactId>
-			<optional>true</optional>
-		</dependency>
-		
-		<!-- === UTILIDADES === -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.datatype</groupId>
-			<artifactId>jackson-datatype-jsr310</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.6.3</version>
-		</dependency>
-		
-		<!-- === DEPENDENCIAS DE TESTING === -->
-		<!-- Spring Boot Test - Incluye JUnit 5, Mockito, AssertJ, TestContainers, MockMvc, etc. -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
-				<exclusion>
-					<groupId>org.junit.vintage</groupId>
-					<artifactId>junit-vintage-engine</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		
-		<!-- TestContainers - Para pruebas de integración con contenedores Docker -->
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- TestContainers específico para MySQL -->
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mysql</artifactId>
-			<version>${testcontainers.version}</version>
-			<scope>test</scope>
-		</dependency>
-		
-		<!-- H2 Database - Base de datos en memoria para pruebas rápidas -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
-	
+		<!-- Business Services -->
+		<module>user-service</module>
+		<module>product-service</module>
+		<module>favourite-service</module>
+		<module>order-service</module>
+		<module>shipping-service</module>
+		<module>payment-service</module>
+	</modules>
+
+	<!-- Dependency Management -->
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -139,138 +78,151 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
-	<modules>
-		<module>service-discovery</module>
-		<module>cloud-config</module>
-		<module>api-gateway</module>
-		<module>proxy-client</module>
-		<module>user-service</module>
-		<module>product-service</module>
-		<module>favourite-service</module>
-		<module>order-service</module>
-		<module>shipping-service</module>
-		<module>payment-service</module>
-	</modules>
-	
+
+	<!-- Common Dependencies -->
+	<dependencies>
+		<!-- Code Generation -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<!-- Testing Framework -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- Container Testing -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<!-- Build Configuration -->
 	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- Spring Boot Plugin -->
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<configuration>
+						<excludes>
+							<exclude>
+								<groupId>org.projectlombok</groupId>
+								<artifactId>lombok</artifactId>
+							</exclude>
+						</excludes>
+					</configuration>
+				</plugin>
+
+				<!-- Unit Test Plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.version}</version>
+					<configuration>
+						<includes>
+							<include>**/*Test.java</include>
+							<include>**/*Tests.java</include>
+						</includes>
+						<excludes>
+							<exclude>**/*IT.java</exclude>
+							<exclude>**/*IntegrationTest.java</exclude>
+						</excludes>
+						<argLine>@{argLine} -Xmx1024m</argLine>
+						<systemPropertyVariables>
+							<spring.profiles.active>test</spring.profiles.active>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+
+				<!-- Integration Test Plugin -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>${maven.failsafe.version}</version>
+					<configuration>
+						<includes>
+							<include>**/*IT.java</include>
+							<include>**/*IntegrationTest.java</include>
+						</includes>
+						<systemPropertyVariables>
+							<spring.profiles.active>integration-test</spring.profiles.active>
+						</systemPropertyVariables>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>integration-test</goal>
+								<goal>verify</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+				<!-- Code Coverage Plugin -->
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>report</id>
+							<phase>test</phase>
+							<goals>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<plugins>
-			<!-- === PLUGIN PRINCIPAL DE SPRING BOOT === -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
-			<!-- === SUREFIRE PLUGIN - Para ejecutar pruebas unitarias === -->
-			<!-- Ejecuta pruebas que terminan en *Test.java o *Tests.java -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${maven.surefire.version}</version>
-				<configuration>
-					<!-- Incluir pruebas unitarias -->
-					<includes>
-						<include>**/*Test.java</include>
-						<include>**/*Tests.java</include>
-					</includes>
-					<!-- Excluir pruebas de integración -->
-					<excludes>
-						<exclude>**/*IT.java</exclude>
-						<exclude>**/*IntegrationTest.java</exclude>
-					</excludes>
-					<!-- Configuración de memoria para las pruebas -->
-					<argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
-					<!-- Variables del sistema para las pruebas -->
-					<systemPropertyVariables>
-						<spring.profiles.active>test</spring.profiles.active>
-					</systemPropertyVariables>
-				</configuration>
-			</plugin>
-			
-			<!-- === FAILSAFE PLUGIN - Para ejecutar pruebas de integración === -->
-			<!-- Ejecuta pruebas que terminan en *IT.java o *IntegrationTest.java -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${maven.failsafe.version}</version>
-				<configuration>
-					<!-- Incluir solo pruebas de integración -->
-					<includes>
-						<include>**/*IT.java</include>
-						<include>**/*IntegrationTest.java</include>
-					</includes>
-					<!-- Perfil específico para pruebas de integración -->
-					<systemPropertyVariables>
-						<spring.profiles.active>integration-test</spring.profiles.active>
-					</systemPropertyVariables>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>integration-test</goal>
-							<goal>verify</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			
-			<!-- === JACOCO PLUGIN - Para análisis de cobertura de código === -->
+
+			<!-- Enable Code Coverage -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<executions>
-					<!-- Preparar el agente de JaCoCo antes de ejecutar las pruebas -->
-					<execution>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-					</execution>
-					<!-- Generar reporte de cobertura después de las pruebas -->
-					<execution>
-						<id>report</id>
-						<phase>test</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-					<!-- Verificar que se cumplan los umbrales mínimos de cobertura -->
-					<execution>
-						<id>check</id>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<configuration>
-							<rules>
-								<rule>
-									<element>BUNDLE</element>
-									<limits>
-										<!-- Mínimo 70% de cobertura de instrucciones -->
-										<limit>
-											<counter>INSTRUCTION</counter>
-											<value>COVEREDRATIO</value>
-											<minimum>0.00</minimum> <!-- Desactiva cobertura de instrucciones -->
-										</limit>
-										<!-- Mínimo 60% de cobertura de ramas -->
-										<limit>
-											<counter>BRANCH</counter>
-											<value>COVEREDRATIO</value>
-											<minimum>0.00</minimum> <!-- Desactiva cobertura de ramas -->
-										</limit>
-									</limits>
-								</rule>
-							</rules>
-						</configuration>
-					</execution>
-				</executions>
+			</plugin>
+
+			<!-- Enable Unit Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+			</plugin>
+
+			<!-- Enable Integration Tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>${project.artifactId}-v${project.version}</finalName>
 	</build>
-	
-	<!-- === PROFILES - Para diferentes estrategias de testing === -->
+
+	<!-- Test Profiles -->
 	<profiles>
-		<!-- PERFIL: Solo pruebas unitarias (activo por defecto) -->
 		<profile>
 			<id>unit-tests</id>
 			<activation>
@@ -295,9 +247,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
-		<!-- PERFIL: Solo pruebas de integración -->
-		<!-- Uso: mvn test -P integration-tests -->
+
 		<profile>
 			<id>integration-tests</id>
 			<build>
@@ -319,9 +269,7 @@
 				</plugins>
 			</build>
 		</profile>
-		
-		<!-- PERFIL: Todas las pruebas (unitarias + integración) -->
-		<!-- Uso: mvn test -P all-tests -->
+
 		<profile>
 			<id>all-tests</id>
 			<build>
@@ -344,5 +292,5 @@
 			</build>
 		</profile>
 	</profiles>
-	
+
 </project>

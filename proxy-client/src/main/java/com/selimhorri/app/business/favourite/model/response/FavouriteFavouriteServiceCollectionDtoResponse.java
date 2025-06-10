@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class FavouriteFavouriteServiceCollectionDtoResponse implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Collection<FavouriteDto> collection;
-	
+
 }

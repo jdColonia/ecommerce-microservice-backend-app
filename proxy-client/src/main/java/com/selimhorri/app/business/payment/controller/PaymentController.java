@@ -20,44 +20,32 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/payments")
 @RequiredArgsConstructor
 public class PaymentController {
-	
+
 	private final PaymentClientService paymentClientService;
-	
+
 	@GetMapping
 	public ResponseEntity<PaymentPaymentServiceDtoCollectionResponse> findAll() {
 		return ResponseEntity.ok(this.paymentClientService.findAll().getBody());
 	}
-	
+
 	@GetMapping("/{paymentId}")
 	public ResponseEntity<PaymentDto> findById(@PathVariable("paymentId") final String paymentId) {
 		return ResponseEntity.ok(this.paymentClientService.findById(paymentId).getBody());
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<PaymentDto> save(@RequestBody final PaymentDto paymentDto) {
 		return ResponseEntity.ok(this.paymentClientService.save(paymentDto).getBody());
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<PaymentDto> update(@RequestBody final PaymentDto paymentDto) {
 		return ResponseEntity.ok(this.paymentClientService.update(paymentDto).getBody());
 	}
-	
+
 	@DeleteMapping("/{paymentId}")
 	public ResponseEntity<Boolean> deleteById(@PathVariable("paymentId") final String paymentId) {
 		return ResponseEntity.ok(this.paymentClientService.deleteById(paymentId).getBody());
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -28,38 +28,28 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class FavouriteDto implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@NotNull(message = "Field must not be NULL")
 	private Integer userId;
-	
+
 	@NotNull(message = "Field must not be NULL")
 	private Integer productId;
-	
+
 	@NotNull(message = "Field must not be NULL")
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
 	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	@JsonFormat(pattern = AppConstant.LOCAL_DATE_TIME_FORMAT, shape = Shape.STRING)
 	@DateTimeFormat(pattern = AppConstant.LOCAL_DATE_TIME_FORMAT)
 	private LocalDateTime likeDate;
-	
+
 	@JsonProperty("user")
 	@JsonInclude(Include.NON_NULL)
 	private UserDto userDto;
-	
+
 	@JsonProperty("product")
 	@JsonInclude(Include.NON_NULL)
 	private ProductDto productDto;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

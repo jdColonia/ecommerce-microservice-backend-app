@@ -18,52 +18,34 @@ import com.selimhorri.app.business.orderItem.model.response.OrderItemOrderItemSe
 
 @FeignClient(name = "SHIPPING-SERVICE", contextId = "shippingClientService", path = "/shipping-service/api/shippings")
 public interface OrderItemClientService {
-	
+
 	@GetMapping
 	ResponseEntity<OrderItemOrderItemServiceDtoCollectionResponse> findAll();
-	
+
 	@GetMapping("/{orderId}/{productId}")
 	ResponseEntity<OrderItemDto> findById(
-			@PathVariable("orderId") final String orderId, 
+			@PathVariable("orderId") final String orderId,
 			@PathVariable("productId") final String productId);
-	
+
 	@GetMapping("/find")
 	ResponseEntity<OrderItemDto> findById(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL") 
-			@Valid final OrderItemId orderItemId);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL") @Valid final OrderItemId orderItemId);
+
 	@PostMapping
 	ResponseEntity<OrderItemDto> save(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL") 
-			@Valid final OrderItemDto orderItemDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL") @Valid final OrderItemDto orderItemDto);
+
 	@PutMapping
 	ResponseEntity<OrderItemDto> update(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL") 
-			@Valid final OrderItemDto orderItemDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL") @Valid final OrderItemDto orderItemDto);
+
 	@DeleteMapping("/{orderId}/{productId}")
 	ResponseEntity<Boolean> deleteById(
-			@PathVariable("orderId") final String orderId, 
+			@PathVariable("orderId") final String orderId,
 			@PathVariable("productId") final String productId);
-	
+
 	@DeleteMapping("/delete")
 	ResponseEntity<Boolean> deleteById(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL") 
-			@Valid final OrderItemId orderItemId);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL") @Valid final OrderItemId orderItemId);
+
 }
-
-
-
-
-
-
-
-
-
-

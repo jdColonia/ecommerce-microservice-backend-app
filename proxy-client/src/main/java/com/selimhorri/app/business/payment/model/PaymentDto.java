@@ -16,25 +16,15 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class PaymentDto implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer paymentId;
 	private Boolean isPayed;
 	private PaymentStatus paymentStatus;
-	
+
 	@JsonProperty("order")
 	@JsonInclude(Include.NON_NULL)
 	private OrderDto orderDto;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

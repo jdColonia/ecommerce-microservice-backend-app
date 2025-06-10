@@ -20,49 +20,38 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/address")
 @RequiredArgsConstructor
 public class AddressController {
-	
+
 	private final AddressClientService addressClientService;
-	
+
 	@GetMapping
 	public ResponseEntity<AddressUserServiceCollectionDtoResponse> findAll() {
 		return ResponseEntity.ok(this.addressClientService.findAll().getBody());
 	}
-	
+
 	@GetMapping("/{addressId}")
 	public ResponseEntity<AddressDto> findById(@PathVariable("addressId") final String addressId) {
 		return ResponseEntity.ok(this.addressClientService.findById(addressId).getBody());
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<AddressDto> save(@RequestBody final AddressDto addressDto) {
 		return ResponseEntity.ok(this.addressClientService.save(addressDto).getBody());
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<AddressDto> update(@RequestBody final AddressDto addressDto) {
 		return ResponseEntity.ok(this.addressClientService.update(addressDto).getBody());
 	}
-	
+
 	@PutMapping("/{addressId}")
-	public ResponseEntity<AddressDto> update(@PathVariable("addressId") final String addressId, @RequestBody final AddressDto addressDto) {
+	public ResponseEntity<AddressDto> update(@PathVariable("addressId") final String addressId,
+			@RequestBody final AddressDto addressDto) {
 		return ResponseEntity.ok(this.addressClientService.update(addressDto).getBody());
 	}
-	
+
 	@DeleteMapping("/{addressId}")
 	public ResponseEntity<Boolean> deleteById(@PathVariable("addressId") final String addressId) {
 		return ResponseEntity.ok(this.addressClientService.deleteById(addressId).getBody());
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -9,27 +9,19 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EnableEurekaClient
 public class PaymentServiceApplication {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(PaymentServiceApplication.class, args);
 	}
-	
-	
-	
+
 }
 
 @RestController
 class PaymentController {
-	
+
 	@GetMapping
 	public String msg() {
 		return "Payment controller responding!!";
 	}
-	
+
 }
-
-
-
-
-
-

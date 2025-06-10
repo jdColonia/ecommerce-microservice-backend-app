@@ -6,7 +6,7 @@ import com.selimhorri.app.dto.OrderItemDto;
 import com.selimhorri.app.dto.ProductDto;
 
 public interface OrderItemMappingHelper {
-	
+
 	public static OrderItemDto map(final OrderItem orderItem) {
 		return OrderItemDto.builder()
 				.productId(orderItem.getProductId())
@@ -14,15 +14,15 @@ public interface OrderItemMappingHelper {
 				.orderedQuantity(orderItem.getOrderedQuantity())
 				.productDto(
 						ProductDto.builder()
-							.productId(orderItem.getProductId())
-							.build())
+								.productId(orderItem.getProductId())
+								.build())
 				.orderDto(
 						OrderDto.builder()
-							.orderId(orderItem.getOrderId())
-							.build())
+								.orderId(orderItem.getOrderId())
+								.build())
 				.build();
 	}
-	
+
 	public static OrderItem map(final OrderItemDto orderItemDto) {
 		return OrderItem.builder()
 				.productId(orderItemDto.getProductId())
@@ -30,17 +30,5 @@ public interface OrderItemMappingHelper {
 				.orderedQuantity(orderItemDto.getOrderedQuantity())
 				.build();
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

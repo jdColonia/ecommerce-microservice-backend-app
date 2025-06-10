@@ -1,7 +1,5 @@
 package com.selimhorri.app.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,33 +22,23 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
-public final class Payment extends AbstractMappedEntity implements Serializable {
-	
+public final class Payment extends AbstractMappedEntity {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "payment_id", unique = true, nullable = false, updatable = false)
 	private Integer paymentId;
-	
+
 	@Column(name = "order_id")
 	private Integer orderId;
-	
+
 	@Column(name = "is_payed")
 	private Boolean isPayed;
-	
+
 	@Enumerated(EnumType.STRING)
 	@Column(name = "payment_status")
 	private PaymentStatus paymentStatus;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

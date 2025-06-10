@@ -7,23 +7,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class ClientConfig {
-	
+
 	@LoadBalanced
 	@Bean
 	public RestTemplate restTemplateBean() {
 		return new RestTemplate();
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,5 @@
 package com.selimhorri.app.domain;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -34,18 +33,18 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
-public final class Favourite extends AbstractMappedEntity implements Serializable {
-	
+public final class Favourite extends AbstractMappedEntity {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "user_id", nullable = false)
 	private Integer userId;
-	
+
 	@Id
 	@Column(name = "product_id", nullable = false)
 	private Integer productId;
-	
+
 	@Id
 	@Column(name = "like_date", nullable = false)
 	@JsonSerialize(using = LocalDateTimeSerializer.class)
@@ -53,15 +52,5 @@ public final class Favourite extends AbstractMappedEntity implements Serializabl
 	@JsonFormat(pattern = AppConstant.LOCAL_DATE_TIME_FORMAT, shape = Shape.STRING)
 	@DateTimeFormat(pattern = AppConstant.LOCAL_DATE_TIME_FORMAT)
 	private LocalDateTime likeDate;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -18,47 +18,29 @@ import com.selimhorri.app.business.user.model.response.VerificationUserTokenServ
 
 @FeignClient(name = "USER-SERVICE", contextId = "verificationTokenClientService", path = "/user-service/api/verificationTokens", decode404 = true)
 public interface VerificationTokenClientService {
-	
+
 	@GetMapping
 	ResponseEntity<VerificationUserTokenServiceCollectionDtoResponse> findAll();
-	
+
 	@GetMapping("/{verificationTokenId}")
 	ResponseEntity<VerificationTokenDto> findById(
-			@PathVariable("verificationTokenId") 
-			@NotBlank(message = "*Input must not blank!**") 
-			@Valid final String verificationTokenId);
-	
+			@PathVariable("verificationTokenId") @NotBlank(message = "*Input must not blank!**") @Valid final String verificationTokenId);
+
 	@PostMapping
 	ResponseEntity<VerificationTokenDto> save(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final VerificationTokenDto verificationTokenDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final VerificationTokenDto verificationTokenDto);
+
 	@PutMapping
 	ResponseEntity<VerificationTokenDto> update(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final VerificationTokenDto verificationTokenDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final VerificationTokenDto verificationTokenDto);
+
 	@PutMapping("/{verificationTokenId}")
 	ResponseEntity<VerificationTokenDto> update(
-			@PathVariable("verificationTokenId") 
-			@NotBlank(message = "*Input must not blank!**") final String verificationTokenId, 
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final VerificationTokenDto verificationTokenDto);
-	
+			@PathVariable("verificationTokenId") @NotBlank(message = "*Input must not blank!**") final String verificationTokenId,
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final VerificationTokenDto verificationTokenDto);
+
 	@DeleteMapping("/{verificationTokenId}")
-	ResponseEntity<Boolean> deleteById(@PathVariable("verificationTokenId") @NotBlank(message = "*Input must not blank!**") @Valid final String verificationTokenId);
-	
+	ResponseEntity<Boolean> deleteById(
+			@PathVariable("verificationTokenId") @NotBlank(message = "*Input must not blank!**") @Valid final String verificationTokenId);
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CredentialDto {
-	
+
 	private Integer credentialId;
 	private String username;
 	private String password;
@@ -25,19 +25,12 @@ public class CredentialDto {
 	private Boolean isAccountNonExpired;
 	private Boolean isAccountNonLocked;
 	private Boolean isCredentialsNonExpired;
-	
+
 	@JsonProperty("user")
 	@JsonInclude(value = Include.NON_NULL)
 	private UserDto userDto;
-	
+
 	@JsonInclude(value = Include.NON_NULL)
 	private Set<VerificationTokenDto> verificationTokenDtos;
-	
+
 }
-
-
-
-
-
-
-

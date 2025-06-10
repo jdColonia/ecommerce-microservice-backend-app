@@ -18,53 +18,33 @@ import com.selimhorri.app.business.user.model.response.UserUserServiceCollection
 
 @FeignClient(name = "USER-SERVICE", contextId = "userClientService", path = "/user-service/api/users", decode404 = true)
 public interface UserClientService {
-	
+
 	@GetMapping
 	ResponseEntity<UserUserServiceCollectionDtoResponse> findAll();
-	
+
 	@GetMapping("/{userId}")
 	ResponseEntity<UserDto> findById(
-			@PathVariable("userId") 
-			@NotBlank(message = "*Input must not blank!**") 
-			@Valid final String userId);
-	
+			@PathVariable("userId") @NotBlank(message = "*Input must not blank!**") @Valid final String userId);
+
 	@GetMapping("/username/{username}")
 	ResponseEntity<UserDto> findByUsername(
-			@PathVariable("username") 
-			@NotBlank(message = "*Input must not blank!**") 
-			@Valid final String username);
-	
+			@PathVariable("username") @NotBlank(message = "*Input must not blank!**") @Valid final String username);
+
 	@PostMapping
 	ResponseEntity<UserDto> save(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final UserDto userDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final UserDto userDto);
+
 	@PutMapping
 	ResponseEntity<UserDto> update(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final UserDto userDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final UserDto userDto);
+
 	@PutMapping("/{userId}")
 	ResponseEntity<UserDto> update(
-			@PathVariable("userId") 
-			@NotBlank(message = "*Input must not blank!**") final String userId, 
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final UserDto userDto);
-	
+			@PathVariable("userId") @NotBlank(message = "*Input must not blank!**") final String userId,
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final UserDto userDto);
+
 	@DeleteMapping("/{userId}")
-	ResponseEntity<Boolean> deleteById(@PathVariable("userId") @NotBlank(message = "*Input must not blank!**") @Valid final String userId);
-	
+	ResponseEntity<Boolean> deleteById(
+			@PathVariable("userId") @NotBlank(message = "*Input must not blank!**") @Valid final String userId);
+
 }
-
-
-
-
-
-
-
-
-
-

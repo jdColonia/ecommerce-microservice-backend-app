@@ -18,48 +18,28 @@ import com.selimhorri.app.business.product.model.response.CategoryProductService
 
 @FeignClient(name = "PRODUCT-SERVICE", contextId = "categoryClientService", path = "/product-service/api/categories")
 public interface CategoryClientService {
-	
+
 	@GetMapping
 	ResponseEntity<CategoryProductServiceCollectionDtoResponse> findAll();
-	
+
 	@GetMapping("/{categoryId}")
 	ResponseEntity<CategoryDto> findById(
-			@PathVariable("categoryId") 
-			@NotBlank(message = "Input must not be blank!") 
-			@Valid final String categoryId);
-	
+			@PathVariable("categoryId") @NotBlank(message = "Input must not be blank!") @Valid final String categoryId);
+
 	@PostMapping
 	ResponseEntity<CategoryDto> save(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final CategoryDto categoryDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final CategoryDto categoryDto);
+
 	@PutMapping
 	ResponseEntity<CategoryDto> update(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final CategoryDto categoryDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final CategoryDto categoryDto);
+
 	@PutMapping("/{categoryId}")
 	ResponseEntity<CategoryDto> update(
-			@PathVariable("categoryId")
-			@NotBlank(message = "Input must not be blank!")
-			@Valid final String categoryId,
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final CategoryDto categoryDto);
-	
+			@PathVariable("categoryId") @NotBlank(message = "Input must not be blank!") @Valid final String categoryId,
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final CategoryDto categoryDto);
+
 	@DeleteMapping("/{categoryId}")
 	ResponseEntity<Boolean> deleteById(@PathVariable("categoryId") final String categoryId);
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -6,7 +6,7 @@ import com.selimhorri.app.dto.CartDto;
 import com.selimhorri.app.dto.OrderDto;
 
 public interface OrderMappingHelper {
-	
+
 	public static OrderDto map(final Order order) {
 		return OrderDto.builder()
 				.orderId(order.getOrderId())
@@ -15,11 +15,11 @@ public interface OrderMappingHelper {
 				.orderFee(order.getOrderFee())
 				.cartDto(
 						CartDto.builder()
-							.cartId(order.getCart().getCartId())
-							.build())
+								.cartId(order.getCart().getCartId())
+								.build())
 				.build();
 	}
-	
+
 	public static Order map(final OrderDto orderDto) {
 		return Order.builder()
 				.orderId(orderDto.getOrderId())
@@ -28,21 +28,9 @@ public interface OrderMappingHelper {
 				.orderFee(orderDto.getOrderFee())
 				.cart(
 						Cart.builder()
-							.cartId(orderDto.getCartDto().getCartId())
-							.build())
+								.cartId(orderDto.getCartDto().getCartId())
+								.build())
 				.build();
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

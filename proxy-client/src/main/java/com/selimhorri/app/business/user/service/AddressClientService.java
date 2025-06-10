@@ -18,47 +18,29 @@ import com.selimhorri.app.business.user.model.response.AddressUserServiceCollect
 
 @FeignClient(name = "USER-SERVICE", contextId = "addressClientService", path = "/user-service/api/address", decode404 = true)
 public interface AddressClientService {
-	
+
 	@GetMapping
 	ResponseEntity<AddressUserServiceCollectionDtoResponse> findAll();
-	
+
 	@GetMapping("/{addressId}")
 	ResponseEntity<AddressDto> findById(
-			@PathVariable("addressId") 
-			@NotBlank(message = "*Input must not blank!**") 
-			@Valid final String addressId);
-	
+			@PathVariable("addressId") @NotBlank(message = "*Input must not blank!**") @Valid final String addressId);
+
 	@PostMapping
 	ResponseEntity<AddressDto> save(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final AddressDto addressDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final AddressDto addressDto);
+
 	@PutMapping
 	ResponseEntity<AddressDto> update(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final AddressDto addressDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final AddressDto addressDto);
+
 	@PutMapping("/{addressId}")
 	ResponseEntity<AddressDto> update(
-			@PathVariable("addressId") 
-			@NotBlank(message = "*Input must not blank!**") final String addressId, 
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final AddressDto addressDto);
-	
+			@PathVariable("addressId") @NotBlank(message = "*Input must not blank!**") final String addressId,
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final AddressDto addressDto);
+
 	@DeleteMapping("/{addressId}")
-	ResponseEntity<Boolean> deleteById(@PathVariable("addressId") @NotBlank(message = "*Input must not blank!**") @Valid final String addressId);
-	
+	ResponseEntity<Boolean> deleteById(
+			@PathVariable("addressId") @NotBlank(message = "*Input must not blank!**") @Valid final String addressId);
+
 }
-
-
-
-
-
-
-
-
-
-

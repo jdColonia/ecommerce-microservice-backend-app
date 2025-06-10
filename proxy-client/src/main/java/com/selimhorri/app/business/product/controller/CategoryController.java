@@ -20,50 +20,38 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
 public class CategoryController {
-	
+
 	private final CategoryClientService categoryClientService;
-	
+
 	@GetMapping
 	public ResponseEntity<CategoryProductServiceCollectionDtoResponse> findAll() {
 		return ResponseEntity.ok(this.categoryClientService.findAll().getBody());
 	}
-	
+
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<CategoryDto> findById(@PathVariable("categoryId") final String categoryId) {
 		return ResponseEntity.ok(this.categoryClientService.findById(categoryId).getBody());
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<CategoryDto> save(@RequestBody final CategoryDto categoryDto) {
 		return ResponseEntity.ok(this.categoryClientService.save(categoryDto).getBody());
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<CategoryDto> update(@RequestBody final CategoryDto categoryDto) {
 		return ResponseEntity.ok(this.categoryClientService.update(categoryDto).getBody());
 	}
-	
+
 	@PutMapping("/{categoryId}")
-	public ResponseEntity<CategoryDto> update(@PathVariable("categoryId") final String categoryId, 
+	public ResponseEntity<CategoryDto> update(@PathVariable("categoryId") final String categoryId,
 			@RequestBody final CategoryDto categoryDto) {
 		return ResponseEntity.ok(this.categoryClientService.update(categoryId, categoryDto).getBody());
 	}
-	
+
 	@DeleteMapping("/{categoryId}")
 	public ResponseEntity<Boolean> deleteById(@PathVariable("categoryId") final String categoryId) {
 		return ResponseEntity.ok(this.categoryClientService.deleteById(categoryId).getBody());
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -13,23 +13,15 @@ public class ShippingServiceApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ShippingServiceApplication.class, args);
 	}
-	
-	
-	
+
 }
 
 @RestController
 class ShippingController {
-	
+
 	@GetMapping
 	public String msg() {
 		return "shipping controller responding!!";
 	}
-	
+
 }
-
-
-
-
-
-

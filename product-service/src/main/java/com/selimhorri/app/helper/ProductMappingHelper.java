@@ -6,7 +6,7 @@ import com.selimhorri.app.dto.CategoryDto;
 import com.selimhorri.app.dto.ProductDto;
 
 public interface ProductMappingHelper {
-	
+
 	public static ProductDto map(final Product product) {
 		return ProductDto.builder()
 				.productId(product.getProductId())
@@ -17,13 +17,13 @@ public interface ProductMappingHelper {
 				.quantity(product.getQuantity())
 				.categoryDto(
 						CategoryDto.builder()
-							.categoryId(product.getCategory().getCategoryId())
-							.categoryTitle(product.getCategory().getCategoryTitle())
-							.imageUrl(product.getCategory().getImageUrl())
-							.build())
+								.categoryId(product.getCategory().getCategoryId())
+								.categoryTitle(product.getCategory().getCategoryTitle())
+								.imageUrl(product.getCategory().getImageUrl())
+								.build())
 				.build();
 	}
-	
+
 	public static Product map(final ProductDto productDto) {
 		return Product.builder()
 				.productId(productDto.getProductId())
@@ -34,23 +34,11 @@ public interface ProductMappingHelper {
 				.quantity(productDto.getQuantity())
 				.category(
 						Category.builder()
-							.categoryId(productDto.getCategoryDto().getCategoryId())
-							.categoryTitle(productDto.getCategoryDto().getCategoryTitle())
-							.imageUrl(productDto.getCategoryDto().getImageUrl())
-							.build())
+								.categoryId(productDto.getCategoryDto().getCategoryId())
+								.categoryTitle(productDto.getCategoryDto().getCategoryTitle())
+								.imageUrl(productDto.getCategoryDto().getImageUrl())
+								.build())
 				.build();
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

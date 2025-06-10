@@ -18,48 +18,28 @@ import com.selimhorri.app.business.order.model.response.CartOrderServiceDtoColle
 
 @FeignClient(name = "ORDER-SERVICE", contextId = "cartClientService", path = "/order-service/api/carts")
 public interface CartClientService {
-	
+
 	@GetMapping
 	public ResponseEntity<CartOrderServiceDtoCollectionResponse> findAll();
-	
+
 	@GetMapping("/{cartId}")
 	public ResponseEntity<CartDto> findById(
-			@PathVariable("cartId") 
-			@NotBlank(message = "Input must not be blank!") 
-			@Valid final String cartId);
-	
+			@PathVariable("cartId") @NotBlank(message = "Input must not be blank!") @Valid final String cartId);
+
 	@PostMapping
 	public ResponseEntity<CartDto> save(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final CartDto cartDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final CartDto cartDto);
+
 	@PutMapping
 	public ResponseEntity<CartDto> update(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final CartDto cartDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final CartDto cartDto);
+
 	@PutMapping("/{cartId}")
 	public ResponseEntity<CartDto> update(
-			@PathVariable("cartId")
-			@NotBlank(message = "Input must not be blank!")
-			@Valid final String cartId,
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final CartDto cartDto);
-	
+			@PathVariable("cartId") @NotBlank(message = "Input must not be blank!") @Valid final String cartId,
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final CartDto cartDto);
+
 	@DeleteMapping("/{cartId}")
 	public ResponseEntity<Boolean> deleteById(@PathVariable("cartId") final String cartId);
-	
+
 }
-
-
-
-
-
-
-
-
-
-

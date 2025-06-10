@@ -18,48 +18,28 @@ import com.selimhorri.app.business.order.model.response.OrderOrderServiceDtoColl
 
 @FeignClient(name = "ORDER-SERVICE", contextId = "orderClientService", path = "/order-service/api/orders")
 public interface OrderClientService {
-	
+
 	@GetMapping
 	public ResponseEntity<OrderOrderServiceDtoCollectionResponse> findAll();
-	
+
 	@GetMapping("/{orderId}")
 	public ResponseEntity<OrderDto> findById(
-			@PathVariable("orderId") 
-			@NotBlank(message = "Input must not be blank!") 
-			@Valid final String orderId);
-	
+			@PathVariable("orderId") @NotBlank(message = "Input must not be blank!") @Valid final String orderId);
+
 	@PostMapping
 	public ResponseEntity<OrderDto> save(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final OrderDto orderDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final OrderDto orderDto);
+
 	@PutMapping
 	public ResponseEntity<OrderDto> update(
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final OrderDto orderDto);
-	
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final OrderDto orderDto);
+
 	@PutMapping("/{orderId}")
 	public ResponseEntity<OrderDto> update(
-			@PathVariable("orderId")
-			@NotBlank(message = "Input must not be blank!")
-			@Valid final String orderId,
-			@RequestBody 
-			@NotNull(message = "Input must not be NULL!") 
-			@Valid final OrderDto orderDto);
-	
+			@PathVariable("orderId") @NotBlank(message = "Input must not be blank!") @Valid final String orderId,
+			@RequestBody @NotNull(message = "Input must not be NULL!") @Valid final OrderDto orderDto);
+
 	@DeleteMapping("/{orderId}")
 	public ResponseEntity<Boolean> deleteById(@PathVariable("orderId") final String orderId);
-	
+
 }
-
-
-
-
-
-
-
-
-
-

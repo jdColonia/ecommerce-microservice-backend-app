@@ -12,17 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class DtoCollectionResponse<T> {
-	
+
 	private Collection<T> collection;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

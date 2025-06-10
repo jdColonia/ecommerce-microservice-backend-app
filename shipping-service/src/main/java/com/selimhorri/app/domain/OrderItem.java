@@ -1,7 +1,5 @@
 package com.selimhorri.app.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -24,29 +22,19 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Builder
-public final class OrderItem extends AbstractMappedEntity implements Serializable {
-	
+public final class OrderItem extends AbstractMappedEntity {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@Column(name = "product_id", nullable = false, updatable = false)
 	private Integer productId;
-	
+
 	@Id
 	@Column(name = "order_id", nullable = false, updatable = false)
 	private Integer orderId;
-	
+
 	@Column(name = "ordered_quantity")
 	private Integer orderedQuantity;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -18,53 +18,33 @@ import com.selimhorri.app.business.user.model.response.CredentialUserServiceColl
 
 @FeignClient(name = "USER-SERVICE", contextId = "credentialClientService", path = "/user-service/api/credentials", decode404 = true)
 public interface CredentialClientService {
-	
+
 	@GetMapping
 	ResponseEntity<CredentialUserServiceCollectionDtoResponse> findAll();
-	
+
 	@GetMapping("/{credentialId}")
 	ResponseEntity<CredentialDto> findById(
-			@PathVariable("credentialId") 
-			@NotBlank(message = "*Input must not blank!**") 
-			@Valid final String credentialId);
-	
+			@PathVariable("credentialId") @NotBlank(message = "*Input must not blank!**") @Valid final String credentialId);
+
 	@GetMapping("/username/{username}")
 	ResponseEntity<CredentialDto> findByUsername(
-			@PathVariable("username") 
-			@NotBlank(message = "*Input must not blank!**") 
-			@Valid final String username);
-	
+			@PathVariable("username") @NotBlank(message = "*Input must not blank!**") @Valid final String username);
+
 	@PostMapping
 	ResponseEntity<CredentialDto> save(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final CredentialDto credentialDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final CredentialDto credentialDto);
+
 	@PutMapping
 	ResponseEntity<CredentialDto> update(
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final CredentialDto credentialDto);
-	
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final CredentialDto credentialDto);
+
 	@PutMapping("/{credentialId}")
 	ResponseEntity<CredentialDto> update(
-			@PathVariable("credentialId") 
-			@NotBlank(message = "*Input must not blank!**") final String credentialId, 
-			@RequestBody 
-			@NotNull(message = "*Input must not NULL!**") 
-			@Valid final CredentialDto credentialDto);
-	
+			@PathVariable("credentialId") @NotBlank(message = "*Input must not blank!**") final String credentialId,
+			@RequestBody @NotNull(message = "*Input must not NULL!**") @Valid final CredentialDto credentialDto);
+
 	@DeleteMapping("/{credentialId}")
-	ResponseEntity<Boolean> deleteById(@PathVariable("credentialId") @NotBlank(message = "*Input must not blank!**") @Valid final String credentialId);
-	
+	ResponseEntity<Boolean> deleteById(
+			@PathVariable("credentialId") @NotBlank(message = "*Input must not blank!**") @Valid final String credentialId);
+
 }
-
-
-
-
-
-
-
-
-
-

@@ -23,34 +23,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationController {
-	
+
 	private final AuthenticationService authenticationService;
-	
+
 	@PostMapping
 	public ResponseEntity<AuthenticationResponse> authenticate(
-			@RequestBody 
-			@NotNull(message = "") 
-			@Valid final AuthenticationRequest authenticationRequest) {
+			@RequestBody @NotNull(message = "") @Valid final AuthenticationRequest authenticationRequest) {
 		log.info("**Authentication controller, proceed with the request*\n");
 		return ResponseEntity.ok(this.authenticationService.authenticate(authenticationRequest));
 	}
-	
+
 	@GetMapping("/jwt/{jwt}")
 	public ResponseEntity<Boolean> authenticate(@PathVariable("jwt") final String jwt) {
 		log.info("**Authentication controller, proceed with the request*\n");
 		return ResponseEntity.ok(this.authenticationService.authenticate(jwt));
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

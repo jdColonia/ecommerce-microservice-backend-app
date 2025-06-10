@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class ProductDto implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Integer productId;
 	private String productTitle;
@@ -24,19 +24,9 @@ public class ProductDto implements Serializable {
 	private String sku;
 	private Double priceUnit;
 	private Integer quantity;
-	
+
 	@JsonProperty("category")
 	@JsonInclude(Include.NON_NULL)
 	private CategoryDto categoryDto;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

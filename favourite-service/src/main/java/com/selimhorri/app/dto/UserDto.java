@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class UserDto implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 	private Integer userId;
 	private String firstName;
@@ -24,18 +24,8 @@ public class UserDto implements Serializable {
 	private String imageUrl;
 	private String email;
 	private String phone;
-	
+
 	@JsonInclude(Include.NON_NULL)
 	private Set<FavouriteDto> favouriteDtos;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

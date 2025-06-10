@@ -19,43 +19,30 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
-	
+
 	private final AuthenticationManager authenticationManager;
 	private final UserDetailsService userDetailsService;
 	private final JwtService jwtService;
-	
+
 	@Override
 	public AuthenticationResponse authenticate(final AuthenticationRequest authenticationRequest) {
-		
+
 		log.info("** AuthenticationResponse, authenticate user service*\n");
-		
+
 		try {
 			this.authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
-		}
-		catch (BadCredentialsException e) {
+		} catch (BadCredentialsException e) {
 			throw new IllegalAuthenticationCredentialsException("#### Bad credentials! ####");
 		}
-		
+
 		return new AuthenticationResponse(this.jwtService.generateToken(this.userDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername())));
 	}
-	
+
 	@Override
 	public Boolean authenticate(final String jwt) {
 		return null;
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

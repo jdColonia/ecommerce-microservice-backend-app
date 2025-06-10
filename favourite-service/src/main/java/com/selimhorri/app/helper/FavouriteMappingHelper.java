@@ -6,7 +6,7 @@ import com.selimhorri.app.dto.ProductDto;
 import com.selimhorri.app.dto.UserDto;
 
 public interface FavouriteMappingHelper {
-	
+
 	public static FavouriteDto map(final Favourite favourite) {
 		return FavouriteDto.builder()
 				.userId(favourite.getUserId())
@@ -14,15 +14,15 @@ public interface FavouriteMappingHelper {
 				.likeDate(favourite.getLikeDate())
 				.userDto(
 						UserDto.builder()
-							.userId(favourite.getUserId())
-							.build())
+								.userId(favourite.getUserId())
+								.build())
 				.productDto(
 						ProductDto.builder()
-						.productId(favourite.getProductId())
-						.build())
+								.productId(favourite.getProductId())
+								.build())
 				.build();
 	}
-	
+
 	public static Favourite map(final FavouriteDto favouriteDto) {
 		return Favourite.builder()
 				.userId(favouriteDto.getUserId())
@@ -30,17 +30,5 @@ public interface FavouriteMappingHelper {
 				.likeDate(favouriteDto.getLikeDate())
 				.build();
 	}
-	
-	
-	
+
 }
-
-
-
-
-
-
-
-
-
-

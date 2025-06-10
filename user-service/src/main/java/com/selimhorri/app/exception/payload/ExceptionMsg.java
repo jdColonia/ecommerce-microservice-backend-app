@@ -20,28 +20,18 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public final class ExceptionMsg  implements Serializable {
-	
+public final class ExceptionMsg implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@JsonFormat(shape = Shape.STRING, pattern = AppConstant.ZONED_DATE_TIME_FORMAT)
 	private final ZonedDateTime timestamp;
-	
+
 	@JsonInclude(value = Include.NON_NULL)
 	private Throwable throwable;
-	
+
 	private final HttpStatus httpStatus;
-	
+
 	private final String msg;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

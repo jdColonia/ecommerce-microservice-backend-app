@@ -1,0 +1,40 @@
+spring:
+  # Disable all external service configurations for testing
+  config:
+    import: ''
+  cloud:
+    config:
+      enabled: false
+      import-check:
+        enabled: false
+    discovery:
+      enabled: false
+  # Application configuration
+  application:
+    name: USER-SERVICE-TEST
+
+  # Database configuration will be set by TestPropertySource
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+# Disable external services
+eureka:
+  client:
+    enabled: false
+
+# Server configuration
+server:
+  servlet:
+    context-path: /user-service
+
+# Logging for debugging
+logging:
+  level:
+    org.springframework.web: DEBUG
+    com.selimhorri.app: DEBUG
+    org.testcontainers: INFO

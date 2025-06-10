@@ -18,40 +18,30 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 public class CredentialDto implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Integer credentialId;
-	
+
 	private String username;
-	
+
 	private String password;
-	
+
 	private RoleBasedAuthority roleBasedAuthority;
-	
+
 	private Boolean isEnabled;
-	
+
 	private Boolean isAccountNonExpired;
-	
+
 	private Boolean isAccountNonLocked;
-	
+
 	private Boolean isCredentialsNonExpired;
-	
+
 	@JsonProperty("user")
 	@JsonInclude(value = Include.NON_NULL)
 	private UserDto userDto;
-	
+
 	@JsonInclude(value = Include.NON_NULL)
 	private Set<VerificationTokenDto> verificationTokenDtos;
-	
+
 }
-
-
-
-
-
-
-
-
-
-

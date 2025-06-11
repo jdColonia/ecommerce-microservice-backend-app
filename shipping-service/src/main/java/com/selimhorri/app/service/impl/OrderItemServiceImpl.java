@@ -3,7 +3,7 @@ package com.selimhorri.app.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional
 @Slf4j
 @RequiredArgsConstructor
 public class OrderItemServiceImpl implements OrderItemService {
@@ -31,6 +30,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	private final RestTemplate restTemplate;
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<OrderItemDto> findAll() {
 		log.info("*** OrderItemDto List, service; fetch all orderItems *");
 		return this.orderItemRepository.findAll()
@@ -50,6 +50,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public OrderItemDto findById(final OrderItemId orderItemId) {
 		log.info("*** OrderItemDto, service; fetch orderItem by id *");
 		return this.orderItemRepository.findById(null)
@@ -68,6 +69,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	}
 
 	@Override
+	@Transactional
 	public OrderItemDto save(final OrderItemDto orderItemDto) {
 		log.info("*** OrderItemDto, service; save orderItem *");
 		return OrderItemMappingHelper.map(this.orderItemRepository
@@ -75,6 +77,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	}
 
 	@Override
+	@Transactional
 	public OrderItemDto update(final OrderItemDto orderItemDto) {
 		log.info("*** OrderItemDto, service; update orderItem *");
 		return OrderItemMappingHelper.map(this.orderItemRepository
@@ -82,6 +85,7 @@ public class OrderItemServiceImpl implements OrderItemService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(final OrderItemId orderItemId) {
 		log.info("*** Void, service; delete orderItem by id *");
 		this.orderItemRepository.deleteById(orderItemId);

@@ -3,7 +3,7 @@ package com.selimhorri.app.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Transactional
 @Slf4j
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
@@ -29,6 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
 	private final RestTemplate restTemplate;
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<PaymentDto> findAll() {
 		log.info("*** PaymentDto List, service; fetch all payments *");
 		return this.paymentRepository.findAll()
@@ -45,6 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public PaymentDto findById(final Integer paymentId) {
 		log.info("*** PaymentDto, service; fetch payment by id *");
 		return this.paymentRepository.findById(paymentId)
@@ -60,6 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	@Transactional
 	public PaymentDto save(final PaymentDto paymentDto) {
 		log.info("*** PaymentDto, service; save payment *");
 		return PaymentMappingHelper.map(this.paymentRepository
@@ -67,6 +69,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	@Transactional
 	public PaymentDto update(final PaymentDto paymentDto) {
 		log.info("*** PaymentDto, service; update payment *");
 		return PaymentMappingHelper.map(this.paymentRepository
@@ -74,6 +77,7 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(final Integer paymentId) {
 		log.info("*** Void, service; delete payment by id *");
 		this.paymentRepository.deleteById(paymentId);

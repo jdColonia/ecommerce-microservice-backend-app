@@ -13,10 +13,9 @@ public interface OrderMappingHelper {
 				.orderDate(order.getOrderDate())
 				.orderDesc(order.getOrderDesc())
 				.orderFee(order.getOrderFee())
-				.cartDto(
-						CartDto.builder()
-								.cartId(order.getCart().getCartId())
-								.build())
+				.cartDto(order.getCart() != null ? CartDto.builder()
+						.cartId(order.getCart().getCartId())
+						.build() : null)
 				.build();
 	}
 
@@ -26,10 +25,9 @@ public interface OrderMappingHelper {
 				.orderDate(orderDto.getOrderDate())
 				.orderDesc(orderDto.getOrderDesc())
 				.orderFee(orderDto.getOrderFee())
-				.cart(
-						Cart.builder()
-								.cartId(orderDto.getCartDto().getCartId())
-								.build())
+				.cart(orderDto.getCartDto() != null ? Cart.builder()
+						.cartId(orderDto.getCartDto().getCartId())
+						.build() : null)
 				.build();
 	}
 

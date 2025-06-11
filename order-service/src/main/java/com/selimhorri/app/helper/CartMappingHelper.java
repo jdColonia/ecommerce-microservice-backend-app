@@ -10,17 +10,16 @@ public interface CartMappingHelper {
 		return CartDto.builder()
 				.cartId(cart.getCartId())
 				.userId(cart.getUserId())
-				.userDto(
-						UserDto.builder()
-								.userId(cart.getUserId())
-								.build())
+				.userDto(cart.getUserId() != null ? UserDto.builder()
+						.userId(cart.getUserId())
+						.build() : null)
 				.build();
 	}
 
 	public static Cart map(final CartDto cartDto) {
 		return Cart.builder()
-				.cartId(cartDto.getCartId())
-				.userId(cartDto.getUserId())
+				.cartId(cartDto.getCartId() != null ? cartDto.getCartId() : null)
+				.userId(cartDto.getUserId() != null ? cartDto.getUserId() : null)
 				.build();
 	}
 

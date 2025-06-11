@@ -12,14 +12,12 @@ public interface FavouriteMappingHelper {
 				.userId(favourite.getUserId())
 				.productId(favourite.getProductId())
 				.likeDate(favourite.getLikeDate())
-				.userDto(
-						UserDto.builder()
-								.userId(favourite.getUserId())
-								.build())
-				.productDto(
-						ProductDto.builder()
-								.productId(favourite.getProductId())
-								.build())
+				.userDto(favourite.getUserId() != null ? UserDto.builder()
+						.userId(favourite.getUserId())
+						.build() : null)
+				.productDto(favourite.getProductId() != null ? ProductDto.builder()
+						.productId(favourite.getProductId())
+						.build() : null)
 				.build();
 	}
 

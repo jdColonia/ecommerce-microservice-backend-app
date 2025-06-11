@@ -15,12 +15,11 @@ public interface ProductMappingHelper {
 				.sku(product.getSku())
 				.priceUnit(product.getPriceUnit())
 				.quantity(product.getQuantity())
-				.categoryDto(
-						CategoryDto.builder()
-								.categoryId(product.getCategory().getCategoryId())
-								.categoryTitle(product.getCategory().getCategoryTitle())
-								.imageUrl(product.getCategory().getImageUrl())
-								.build())
+				.categoryDto(product.getCategory() != null ? CategoryDto.builder()
+						.categoryId(product.getCategory().getCategoryId())
+						.categoryTitle(product.getCategory().getCategoryTitle())
+						.imageUrl(product.getCategory().getImageUrl())
+						.build() : null)
 				.build();
 	}
 
@@ -32,12 +31,11 @@ public interface ProductMappingHelper {
 				.sku(productDto.getSku())
 				.priceUnit(productDto.getPriceUnit())
 				.quantity(productDto.getQuantity())
-				.category(
-						Category.builder()
-								.categoryId(productDto.getCategoryDto().getCategoryId())
-								.categoryTitle(productDto.getCategoryDto().getCategoryTitle())
-								.imageUrl(productDto.getCategoryDto().getImageUrl())
-								.build())
+				.category(productDto.getCategoryDto() != null ? Category.builder()
+						.categoryId(productDto.getCategoryDto().getCategoryId())
+						.categoryTitle(productDto.getCategoryDto().getCategoryTitle())
+						.imageUrl(productDto.getCategoryDto().getImageUrl())
+						.build() : null)
 				.build();
 	}
 

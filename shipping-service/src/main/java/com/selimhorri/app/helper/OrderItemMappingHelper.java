@@ -12,14 +12,14 @@ public interface OrderItemMappingHelper {
 				.productId(orderItem.getProductId())
 				.orderId(orderItem.getOrderId())
 				.orderedQuantity(orderItem.getOrderedQuantity())
-				.productDto(
+				.productDto(orderItem.getProductId() != null ?
 						ProductDto.builder()
 								.productId(orderItem.getProductId())
-								.build())
-				.orderDto(
+								.build() : null)
+				.orderDto(orderItem.getOrderId() != null ?
 						OrderDto.builder()
 								.orderId(orderItem.getOrderId())
-								.build())
+								.build() : null)
 				.build();
 	}
 

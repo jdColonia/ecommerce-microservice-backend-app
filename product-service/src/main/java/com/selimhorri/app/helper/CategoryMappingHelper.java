@@ -16,12 +16,11 @@ public interface CategoryMappingHelper {
 				.categoryId(category.getCategoryId())
 				.categoryTitle(category.getCategoryTitle())
 				.imageUrl(category.getImageUrl())
-				.parentCategoryDto(
-						CategoryDto.builder()
-								.categoryId(parentCategory.getCategoryId())
-								.categoryTitle(parentCategory.getCategoryTitle())
-								.imageUrl(parentCategory.getImageUrl())
-								.build())
+				.parentCategoryDto(category.getParentCategory() != null ? CategoryDto.builder()
+						.categoryId(parentCategory.getCategoryId())
+						.categoryTitle(parentCategory.getCategoryTitle())
+						.imageUrl(parentCategory.getImageUrl())
+						.build() : null)
 				.build();
 	}
 
@@ -34,12 +33,11 @@ public interface CategoryMappingHelper {
 				.categoryId(categoryDto.getCategoryId())
 				.categoryTitle(categoryDto.getCategoryTitle())
 				.imageUrl(categoryDto.getImageUrl())
-				.parentCategory(
-						Category.builder()
-								.categoryId(parentCategoryDto.getCategoryId())
-								.categoryTitle(parentCategoryDto.getCategoryTitle())
-								.imageUrl(parentCategoryDto.getImageUrl())
-								.build())
+				.parentCategory(categoryDto.getParentCategoryDto() != null ? Category.builder()
+						.categoryId(parentCategoryDto.getCategoryId())
+						.categoryTitle(parentCategoryDto.getCategoryTitle())
+						.imageUrl(parentCategoryDto.getImageUrl())
+						.build() : null)
 				.build();
 	}
 

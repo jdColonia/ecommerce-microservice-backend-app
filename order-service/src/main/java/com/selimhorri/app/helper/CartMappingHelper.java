@@ -18,8 +18,8 @@ public interface CartMappingHelper {
 
 	public static Cart map(final CartDto cartDto) {
 		return Cart.builder()
-				.cartId(cartDto.getCartId() != null ? cartDto.getCartId() : null)
-				.userId(cartDto.getUserId() != null ? cartDto.getUserId() : null)
+				.cartId(cartDto.getCartId())
+				.userId(cartDto.getUserId())
 				.build();
 	}
 

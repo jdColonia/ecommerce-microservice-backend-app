@@ -11,10 +11,9 @@ public interface PaymentMappingHelper {
 				.paymentId(payment.getPaymentId())
 				.isPayed(payment.getIsPayed())
 				.paymentStatus(payment.getPaymentStatus())
-				.orderDto(
-						OrderDto.builder()
-								.orderId(payment.getOrderId())
-								.build())
+				.orderDto(payment.getOrderId() != null ? OrderDto.builder()
+						.orderId(payment.getOrderId())
+						.build() : null)
 				.build();
 	}
 

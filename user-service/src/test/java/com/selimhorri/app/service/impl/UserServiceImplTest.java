@@ -41,7 +41,6 @@ class UserServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         testCredential = Credential.builder()
                 .credentialId(1)
                 .username("testuser")
@@ -90,7 +89,7 @@ class UserServiceImplTest {
     void findAll_WhenUsersExist_ShouldReturnUserDtoList() {
         // Arrange
         List<User> users = Arrays.asList(testUser);
-        when(userRepository.findAll()).thenReturn(users);
+        when(userRepository.findAllWithCredentials()).thenReturn(users);
 
         // Act
         List<UserDto> result = userService.findAll();
@@ -101,14 +100,15 @@ class UserServiceImplTest {
         assertEquals(testUser.getUserId(), result.get(0).getUserId());
         assertEquals(testUser.getFirstName(), result.get(0).getFirstName());
         assertEquals(testUser.getLastName(), result.get(0).getLastName());
-        verify(userRepository, times(1)).findAll();
+        assertEquals(testUser.getEmail(), result.get(0).getEmail());
+        verify(userRepository, times(1)).findAllWithCredentials();
     }
 
     @Test
     @DisplayName("findAll - Cuando no existen usuarios - Debe retornar lista vacía")
     void findAll_WhenNoUsersExist_ShouldReturnEmptyList() {
         // Arrange
-        when(userRepository.findAll()).thenReturn(Arrays.asList());
+        when(userRepository.findAllWithCredentials()).thenReturn(Arrays.asList());
 
         // Act
         List<UserDto> result = userService.findAll();
@@ -116,7 +116,7 @@ class UserServiceImplTest {
         // Assert
         assertNotNull(result);
         assertTrue(result.isEmpty());
-        verify(userRepository, times(1)).findAll();
+        verify(userRepository, times(1)).findAllWithCredentials();
     }
 
     @Test
@@ -124,7 +124,7 @@ class UserServiceImplTest {
     void findById_WhenUserExists_ShouldReturnUserDto() {
         // Arrange
         Integer userId = 1;
-        when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
+        when(userRepository.findByIdWithCredential(userId)).thenReturn(Optional.of(testUser));
 
         // Act
         UserDto result = userService.findById(userId);
@@ -134,7 +134,8 @@ class UserServiceImplTest {
         assertEquals(testUser.getUserId(), result.getUserId());
         assertEquals(testUser.getFirstName(), result.getFirstName());
         assertEquals(testUser.getEmail(), result.getEmail());
-        verify(userRepository, times(1)).findById(userId);
+        assertEquals(testUser.getCredential().getUsername(), result.getCredentialDto().getUsername());
+        verify(userRepository, times(1)).findByIdWithCredential(userId);
     }
 
     @Test
@@ -142,7 +143,7 @@ class UserServiceImplTest {
     void findById_WhenUserNotExists_ShouldThrowUserObjectNotFoundException() {
         // Arrange
         Integer userId = 999;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithCredential(userId)).thenReturn(Optional.empty());
 
         // Act & Assert
         UserObjectNotFoundException exception = assertThrows(
@@ -150,7 +151,7 @@ class UserServiceImplTest {
                 () -> userService.findById(userId));
 
         assertTrue(exception.getMessage().contains("User with id: 999 not found"));
-        verify(userRepository, times(1)).findById(userId);
+        verify(userRepository, times(1)).findByIdWithCredential(userId);
     }
 
     @Test
@@ -166,6 +167,7 @@ class UserServiceImplTest {
         assertNotNull(result);
         assertEquals(testUser.getUserId(), result.getUserId());
         assertEquals(testUser.getFirstName(), result.getFirstName());
+        assertEquals(testUser.getEmail(), result.getEmail());
         verify(userRepository, times(1)).save(any(User.class));
     }
 
@@ -174,7 +176,7 @@ class UserServiceImplTest {
     void findByUsername_WhenUserExists_ShouldReturnUserDto() {
         // Arrange
         String username = "testuser";
-        when(userRepository.findByCredentialUsername(username)).thenReturn(Optional.of(testUser));
+        when(userRepository.findByCredentialUsernameWithCredential(username)).thenReturn(Optional.of(testUser));
 
         // Act
         UserDto result = userService.findByUsername(username);
@@ -183,7 +185,7 @@ class UserServiceImplTest {
         assertNotNull(result);
         assertEquals(testUser.getUserId(), result.getUserId());
         assertEquals(testUser.getCredential().getUsername(), result.getCredentialDto().getUsername());
-        verify(userRepository, times(1)).findByCredentialUsername(username);
+        verify(userRepository, times(1)).findByCredentialUsernameWithCredential(username);
     }
 
     @Test
@@ -191,7 +193,7 @@ class UserServiceImplTest {
     void findByUsername_WhenUserNotExists_ShouldThrowUserObjectNotFoundException() {
         // Arrange
         String username = "nonexistent";
-        when(userRepository.findByCredentialUsername(username)).thenReturn(Optional.empty());
+        when(userRepository.findByCredentialUsernameWithCredential(username)).thenReturn(Optional.empty());
 
         // Act & Assert
         UserObjectNotFoundException exception = assertThrows(
@@ -199,7 +201,7 @@ class UserServiceImplTest {
                 () -> userService.findByUsername(username));
 
         assertTrue(exception.getMessage().contains("User with username: nonexistent not found"));
-        verify(userRepository, times(1)).findByCredentialUsername(username);
+        verify(userRepository, times(1)).findByCredentialUsernameWithCredential(username);
     }
 
     @Test
@@ -232,6 +234,41 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("update con ID - Cuando usuario existe - Debe actualizar correctamente")
+    void updateWithId_WhenUserExists_ShouldUpdateCorrectly() {
+        // Arrange
+        Integer userId = 1;
+        when(userRepository.findByIdWithCredential(userId)).thenReturn(Optional.of(testUser));
+        when(userRepository.save(any(User.class))).thenReturn(testUser);
+
+        // Act
+        UserDto result = userService.update(userId, testUserDto);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(testUser.getUserId(), result.getUserId());
+        verify(userRepository, times(1)).findByIdWithCredential(userId);
+        verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("update con ID - Cuando usuario no existe - Debe lanzar UserObjectNotFoundException")
+    void updateWithId_WhenUserNotExists_ShouldThrowUserObjectNotFoundException() {
+        // Arrange
+        Integer userId = 999;
+        when(userRepository.findByIdWithCredential(userId)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        UserObjectNotFoundException exception = assertThrows(
+                UserObjectNotFoundException.class,
+                () -> userService.update(userId, testUserDto));
+
+        assertTrue(exception.getMessage().contains("User with id: 999 not found"));
+        verify(userRepository, times(1)).findByIdWithCredential(userId);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
     @DisplayName("deleteById - Cuando usuario existe - Debe eliminar sin excepción")
     void deleteById_WhenUserExists_ShouldDeleteWithoutException() {
         // Arrange
@@ -244,20 +281,67 @@ class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("update con ID - Cuando usuario existe - Debe actualizar correctamente")
-    void updateWithId_WhenUserExists_ShouldUpdateCorrectly() {
+    @DisplayName("save - Con usuario sin credencial - Debe guardar correctamente")
+    void save_WithUserWithoutCredential_ShouldSaveCorrectly() {
         // Arrange
-        Integer userId = 1;
-        when(userRepository.findById(userId)).thenReturn(Optional.of(testUser));
-        when(userRepository.save(any(User.class))).thenReturn(testUser);
+        UserDto userDtoWithoutCredential = UserDto.builder()
+                .firstName("No Credential")
+                .lastName("User")
+                .email("nocredential@test.com")
+                .phone("+9876543210")
+                .credentialDto(null)
+                .build();
+
+        User userWithoutCredential = User.builder()
+                .userId(2)
+                .firstName("No Credential")
+                .lastName("User")
+                .email("nocredential@test.com")
+                .phone("+9876543210")
+                .credential(null)
+                .build();
+
+        when(userRepository.save(any(User.class))).thenReturn(userWithoutCredential);
 
         // Act
-        UserDto result = userService.update(userId, testUserDto);
+        UserDto result = userService.save(userDtoWithoutCredential);
 
         // Assert
         assertNotNull(result);
-        assertEquals(testUser.getUserId(), result.getUserId());
-        verify(userRepository, times(1)).findById(userId);
+        assertEquals("No Credential", result.getFirstName());
+        assertNull(result.getCredentialDto());
         verify(userRepository, times(1)).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("findAll - Con múltiples usuarios - Debe retornar todos correctamente")
+    void findAll_WithMultipleUsers_ShouldReturnAllCorrectly() {
+        // Arrange
+        User user2 = User.builder()
+                .userId(2)
+                .firstName("Jane")
+                .lastName("Smith")
+                .email("jane.smith@test.com")
+                .phone("+0987654321")
+                .credential(Credential.builder()
+                        .credentialId(2)
+                        .username("janesmith")
+                        .roleBasedAuthority(RoleBasedAuthority.ROLE_ADMIN)
+                        .isEnabled(true)
+                        .build())
+                .build();
+
+        List<User> users = Arrays.asList(testUser, user2);
+        when(userRepository.findAllWithCredentials()).thenReturn(users);
+
+        // Act
+        List<UserDto> result = userService.findAll();
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals("John", result.get(0).getFirstName());
+        assertEquals("Jane", result.get(1).getFirstName());
+        verify(userRepository, times(1)).findAllWithCredentials();
     }
 }

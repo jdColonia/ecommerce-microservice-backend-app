@@ -12,7 +12,7 @@ public interface VerificationTokenMappingHelper {
 				.verificationTokenId(verificationToken.getVerificationTokenId())
 				.token(verificationToken.getToken())
 				.expireDate(verificationToken.getExpireDate())
-				.credentialDto(
+				.credentialDto(verificationToken.getCredential() != null ?
 						CredentialDto.builder()
 								.credentialId(verificationToken.getCredential().getCredentialId())
 								.username(verificationToken.getCredential().getUsername())
@@ -22,7 +22,7 @@ public interface VerificationTokenMappingHelper {
 								.isAccountNonExpired(verificationToken.getCredential().getIsAccountNonExpired())
 								.isAccountNonLocked(verificationToken.getCredential().getIsAccountNonLocked())
 								.isCredentialsNonExpired(verificationToken.getCredential().getIsCredentialsNonExpired())
-								.build())
+								.build() : null)
 				.build();
 	}
 
@@ -31,7 +31,7 @@ public interface VerificationTokenMappingHelper {
 				.verificationTokenId(verificationTokenDto.getVerificationTokenId())
 				.token(verificationTokenDto.getToken())
 				.expireDate(verificationTokenDto.getExpireDate())
-				.credential(
+				.credential(verificationTokenDto.getCredentialDto() != null ?
 						Credential.builder()
 								.credentialId(verificationTokenDto.getCredentialDto().getCredentialId())
 								.username(verificationTokenDto.getCredentialDto().getUsername())
@@ -42,7 +42,7 @@ public interface VerificationTokenMappingHelper {
 								.isAccountNonLocked(verificationTokenDto.getCredentialDto().getIsAccountNonLocked())
 								.isCredentialsNonExpired(
 										verificationTokenDto.getCredentialDto().getIsCredentialsNonExpired())
-								.build())
+								.build() : null)
 				.build();
 	}
 

@@ -17,7 +17,7 @@ public interface CredentialMappingHelper {
 				.isAccountNonExpired(credential.getIsAccountNonExpired())
 				.isAccountNonLocked(credential.getIsAccountNonLocked())
 				.isCredentialsNonExpired(credential.getIsCredentialsNonExpired())
-				.userDto(
+				.userDto(credential.getUser() != null ?
 						UserDto.builder()
 								.userId(credential.getUser().getUserId())
 								.firstName(credential.getUser().getFirstName())
@@ -25,7 +25,7 @@ public interface CredentialMappingHelper {
 								.imageUrl(credential.getUser().getImageUrl())
 								.email(credential.getUser().getEmail())
 								.phone(credential.getUser().getPhone())
-								.build())
+								.build() : null)
 				.build();
 	}
 
@@ -39,7 +39,7 @@ public interface CredentialMappingHelper {
 				.isAccountNonExpired(credentialDto.getIsAccountNonExpired())
 				.isAccountNonLocked(credentialDto.getIsAccountNonLocked())
 				.isCredentialsNonExpired(credentialDto.getIsCredentialsNonExpired())
-				.user(
+				.user(credentialDto.getUserDto() != null ?
 						User.builder()
 								.userId(credentialDto.getUserDto().getUserId())
 								.firstName(credentialDto.getUserDto().getFirstName())
@@ -47,7 +47,7 @@ public interface CredentialMappingHelper {
 								.imageUrl(credentialDto.getUserDto().getImageUrl())
 								.email(credentialDto.getUserDto().getEmail())
 								.phone(credentialDto.getUserDto().getPhone())
-								.build())
+								.build() : null)
 				.build();
 	}
 

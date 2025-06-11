@@ -13,7 +13,7 @@ public interface AddressMappingHelper {
 				.fullAddress(address.getFullAddress())
 				.postalCode(address.getPostalCode())
 				.city(address.getCity())
-				.userDto(
+				.userDto(address.getUser() != null ?
 						UserDto.builder()
 								.userId(address.getUser().getUserId())
 								.firstName(address.getUser().getFirstName())
@@ -21,7 +21,7 @@ public interface AddressMappingHelper {
 								.imageUrl(address.getUser().getImageUrl())
 								.email(address.getUser().getEmail())
 								.phone(address.getUser().getPhone())
-								.build())
+								.build() : null)
 				.build();
 	}
 
@@ -31,7 +31,7 @@ public interface AddressMappingHelper {
 				.fullAddress(addressDto.getFullAddress())
 				.postalCode(addressDto.getPostalCode())
 				.city(addressDto.getCity())
-				.user(
+				.user(addressDto.getUserDto() != null ?
 						User.builder()
 								.userId(addressDto.getUserDto().getUserId())
 								.firstName(addressDto.getUserDto().getFirstName())
@@ -39,7 +39,7 @@ public interface AddressMappingHelper {
 								.imageUrl(addressDto.getUserDto().getImageUrl())
 								.email(addressDto.getUserDto().getEmail())
 								.phone(addressDto.getUserDto().getPhone())
-								.build())
+								.build() : null)
 				.build();
 	}
 

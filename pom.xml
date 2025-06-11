@@ -33,7 +33,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+	
 	<!-- Distribution Management -->
 	<distributionManagement>
 		<repository>
@@ -58,7 +58,7 @@
 		<module>shipping-service</module>
 		<module>payment-service</module>
 	</modules>
-
+		
 	<!-- Dependency Management -->
 	<dependencyManagement>
 		<dependencies>
@@ -78,7 +78,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
+	
 	<!-- Common Dependencies -->
 	<dependencies>
 		<!-- Code Generation -->
@@ -108,15 +108,15 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	
 	<!-- Build Configuration -->
 	<build>
 		<pluginManagement>
-			<plugins>
+		<plugins>
 				<!-- Spring Boot Plugin -->
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 					<configuration>
 						<excludes>
 							<exclude>
@@ -125,72 +125,72 @@
 							</exclude>
 						</excludes>
 					</configuration>
-				</plugin>
-
+			</plugin>
+			
 				<!-- Unit Test Plugin -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-surefire-plugin</artifactId>
-					<version>${maven.surefire.version}</version>
-					<configuration>
-						<includes>
-							<include>**/*Test.java</include>
-							<include>**/*Tests.java</include>
-						</includes>
-						<excludes>
-							<exclude>**/*IT.java</exclude>
-							<exclude>**/*IntegrationTest.java</exclude>
-						</excludes>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven.surefire.version}</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/*IT.java</exclude>
+						<exclude>**/*IntegrationTest.java</exclude>
+					</excludes>
 						<argLine>@{argLine} -Xmx1024m</argLine>
-						<systemPropertyVariables>
-							<spring.profiles.active>test</spring.profiles.active>
-						</systemPropertyVariables>
-					</configuration>
-				</plugin>
-
+					<systemPropertyVariables>
+						<spring.profiles.active>test</spring.profiles.active>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			
 				<!-- Integration Test Plugin -->
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-failsafe-plugin</artifactId>
-					<version>${maven.failsafe.version}</version>
-					<configuration>
-						<includes>
-							<include>**/*IT.java</include>
-							<include>**/*IntegrationTest.java</include>
-						</includes>
-						<systemPropertyVariables>
-							<spring.profiles.active>integration-test</spring.profiles.active>
-						</systemPropertyVariables>
-					</configuration>
-					<executions>
-						<execution>
-							<goals>
-								<goal>integration-test</goal>
-								<goal>verify</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>${maven.failsafe.version}</version>
+				<configuration>
+					<includes>
+						<include>**/*IT.java</include>
+						<include>**/*IntegrationTest.java</include>
+					</includes>
+					<systemPropertyVariables>
+						<spring.profiles.active>integration-test</spring.profiles.active>
+					</systemPropertyVariables>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 				<!-- Code Coverage Plugin -->
-				<plugin>
-					<groupId>org.jacoco</groupId>
-					<artifactId>jacoco-maven-plugin</artifactId>
-					<version>${jacoco.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>prepare-agent</goal>
-							</goals>
-						</execution>
-						<execution>
-							<id>report</id>
-							<phase>test</phase>
-							<goals>
-								<goal>report</goal>
-							</goals>
-						</execution>
-					</executions>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -220,7 +220,7 @@
 			</plugin>
 		</plugins>
 	</build>
-
+	
 	<!-- Test Profiles -->
 	<profiles>
 		<profile>
@@ -247,7 +247,7 @@
 				</plugins>
 			</build>
 		</profile>
-
+		
 		<profile>
 			<id>integration-tests</id>
 			<build>
@@ -269,7 +269,7 @@
 				</plugins>
 			</build>
 		</profile>
-
+		
 		<profile>
 			<id>all-tests</id>
 			<build>
@@ -292,5 +292,5 @@
 			</build>
 		</profile>
 	</profiles>
-
+	
 </project>

@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class MapperConfig {
 
     @Bean
-    public ObjectMapper objectMapperBean() {
+    public ObjectMapper objectMapper() {
         return JsonMapper.builder()
                 .addModule(new JavaTimeModule())
                 .addModule(new ParameterNamesModule())

@@ -61,4 +61,20 @@ public class ApiExceptionHandler {
 				badRequest);
 	}
 
+	@ExceptionHandler(value = { Exception.class })
+	public ResponseEntity<ExceptionMsg> handleGenericException(final Exception e) {
+
+		log.error("**CRITICAL ERROR - ApiExceptionHandler controller, handle generic exception: {} - {}",
+				e.getClass().getSimpleName(), e.getMessage(), e);
+		final var internalServerError = HttpStatus.INTERNAL_SERVER_ERROR;
+
+		return new ResponseEntity<>(
+				ExceptionMsg.builder()
+						.msg("INTERNAL SERVER ERROR: " + e.getClass().getSimpleName() + " - " + e.getMessage())
+						.httpStatus(internalServerError)
+						.timestamp(ZonedDateTime.now(ZoneId.systemDefault()))
+						.build(),
+				internalServerError);
+	}
+
 }

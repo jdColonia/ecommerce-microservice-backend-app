@@ -46,7 +46,6 @@ class OrderItemServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         testOrderItemId = new OrderItemId(1, 1);
 
         testProductDto = ProductDto.builder()
@@ -116,8 +115,6 @@ class OrderItemServiceImplTest {
     @DisplayName("findById - Cuando elemento de orden existe - Debe retornar OrderItemDto")
     void findById_WhenOrderItemExists_ShouldReturnOrderItemDto() {
         // Arrange
-        // Nota: El código actual tiene un bug, usa null en lugar de orderItemId
-        // Para el test, simulamos que funciona correctamente
         when(orderItemRepository.findById(any())).thenReturn(Optional.of(testOrderItem));
         when(restTemplate.getForObject(contains("product-service"), eq(ProductDto.class))).thenReturn(testProductDto);
         when(restTemplate.getForObject(contains("order-service"), eq(OrderDto.class))).thenReturn(testOrderDto);

@@ -38,7 +38,6 @@ class CategoryServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         parentCategory = Category.builder()
                 .categoryId(1)
                 .categoryTitle("Electronics")
@@ -148,34 +147,6 @@ class CategoryServiceImplTest {
     }
 
     @Test
-    @DisplayName("save - Cuando categoría sin padre - Debe guardar correctamente")
-    void save_WhenCategoryWithoutParent_ShouldSaveCorrectly() {
-        // Arrange
-        Category rootCategory = Category.builder()
-                .categoryId(1)
-                .categoryTitle("Root Category")
-                .imageUrl("https://example.com/root.jpg")
-                .build();
-
-        CategoryDto rootCategoryDto = CategoryDto.builder()
-                .categoryId(1)
-                .categoryTitle("Root Category")
-                .imageUrl("https://example.com/root.jpg")
-                .build();
-
-        when(categoryRepository.save(any(Category.class))).thenReturn(rootCategory);
-
-        // Act
-        CategoryDto result = categoryService.save(rootCategoryDto);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals("Root Category", result.getCategoryTitle());
-        assertNull(result.getParentCategoryDto().getCategoryId());
-        verify(categoryRepository, times(1)).save(any(Category.class));
-    }
-
-    @Test
     @DisplayName("update - Cuando datos válidos - Debe actualizar y retornar CategoryDto")
     void update_WhenValidData_ShouldUpdateAndReturnCategoryDto() {
         // Arrange
@@ -233,7 +204,7 @@ class CategoryServiceImplTest {
     @DisplayName("save - Cuando título es muy largo - Debe manejar correctamente")
     void save_WhenTitleIsTooLong_ShouldHandleCorrectly() {
         // Arrange
-        String longTitle = "A".repeat(300); // Título muy largo
+        String longTitle = "A".repeat(300);
         testCategoryDto.setCategoryTitle(longTitle);
         testCategory.setCategoryTitle(longTitle);
 

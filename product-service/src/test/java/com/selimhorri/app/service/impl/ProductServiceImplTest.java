@@ -40,7 +40,6 @@ class ProductServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         testCategory = Category.builder()
                 .categoryId(1)
                 .categoryTitle("Electronics")

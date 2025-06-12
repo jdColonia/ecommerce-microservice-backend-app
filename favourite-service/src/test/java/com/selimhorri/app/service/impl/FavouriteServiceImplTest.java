@@ -48,7 +48,6 @@ class FavouriteServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         testLikeDate = LocalDateTime.now();
 
         testFavouriteId = new FavouriteId(1, 1, testLikeDate);

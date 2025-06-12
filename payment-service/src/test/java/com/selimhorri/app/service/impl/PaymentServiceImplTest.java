@@ -43,7 +43,6 @@ class PaymentServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         testOrderDto = OrderDto.builder()
                 .orderId(1)
                 .build();

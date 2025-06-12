@@ -41,7 +41,6 @@ class OrderServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // Arrange - Configurar datos de prueba
         testCart = Cart.builder()
                 .cartId(1)
                 .build();
@@ -262,7 +261,7 @@ class OrderServiceImplTest {
                 .orderId(1)
                 .orderDate(testOrderDto.getOrderDate())
                 .orderDesc("Only description changed")
-                .orderFee(testOrderDto.getOrderFee()) // Mantener el fee original
+                .orderFee(testOrderDto.getOrderFee())
                 .cartDto(testCartDto)
                 .build();
 
@@ -282,7 +281,7 @@ class OrderServiceImplTest {
         // Assert
         assertNotNull(result);
         assertEquals("Only description changed", result.getOrderDesc());
-        assertEquals(testOrder.getOrderFee(), result.getOrderFee()); // Fee no debe cambiar
+        assertEquals(testOrder.getOrderFee(), result.getOrderFee());
         assertEquals(testOrder.getOrderId(), result.getOrderId());
         verify(orderRepository, times(1)).save(any(Order.class));
     }
@@ -295,7 +294,7 @@ class OrderServiceImplTest {
                 .orderId(1)
                 .orderDate(testOrderDto.getOrderDate())
                 .orderDesc(testOrderDto.getOrderDesc())
-                .orderFee(0.0) // Fee actualizado a cero
+                .orderFee(0.0)
                 .cartDto(testCartDto)
                 .build();
 

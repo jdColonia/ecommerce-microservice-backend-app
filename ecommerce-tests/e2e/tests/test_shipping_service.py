@@ -45,7 +45,7 @@ class TestShippingServiceE2E:
         # 2. Verificar que el item fue creado correctamente
         order_id = created_shipping["orderId"]
         product_id = created_shipping["productId"]
-        
+
         # Solo verificar que tenemos los IDs correctos del item creado
         assert order_id == shipping_data["orderId"]
         assert product_id == shipping_data["productId"]
@@ -198,7 +198,7 @@ class TestShippingServiceE2E:
             # Verificar que la cantidad fue incrementada correctamente en la respuesta de PUT
             original_quantity = shipping_items_with_refs[i]["orderedQuantity"]
             expected_quantity = original_quantity + 10
-            
+
             # La cantidad ya fue verificada en el paso anterior cuando se hizo el PUT
             assert shipping["orderedQuantity"] == expected_quantity
 
@@ -338,12 +338,12 @@ class TestShippingServiceE2E:
         # Verificar que las operaciones básicas funcionaron
         assert len(created_shippings) == len(shipping_combinations)
         assert len(orders_shipping) == 3  # 3 órdenes diferentes
-        
+
         # Verificar que hay items para cada orden
         assert 1 in orders_shipping
-        assert 2 in orders_shipping  
+        assert 2 in orders_shipping
         assert 3 in orders_shipping
-        
+
         # Verificar agrupación básica
         assert len(orders_shipping[1]) == 3
         assert len(orders_shipping[2]) == 2

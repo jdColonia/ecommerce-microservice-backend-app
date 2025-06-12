@@ -155,7 +155,7 @@ class TestFavouriteServiceE2E:
             favourite_to_update["productId"],
             favourite_to_update["likeDate"],
         )
-        
+
         favourite_to_update["likeDate"] = "11-06-2025__17:00:00:000000"
 
         update_response = make_request(
@@ -184,11 +184,16 @@ class TestFavouriteServiceE2E:
         # 1. Definir combinaciones de usuarios y productos
         user_product_combinations = [
             # Usuario 1 - 3 productos
-            (1, 1), (1, 2), (1, 3),
+            (1, 1),
+            (1, 2),
+            (1, 3),
             # Usuario 2 - 2 productos
-            (2, 1), (2, 2),
+            (2, 1),
+            (2, 2),
             # Usuario 3 - 3 productos
-            (3, 1), (3, 2), (3, 3),
+            (3, 1),
+            (3, 2),
+            (3, 3),
         ]
 
         created_favourites = []
@@ -231,7 +236,9 @@ class TestFavouriteServiceE2E:
         minimum_counts = {1: 2, 2: 1, 3: 2}
         for user_id, minimum_count in minimum_counts.items():
             actual_count = user_favourite_counts.get(user_id, 0)
-            assert actual_count >= minimum_count, f"Usuario {user_id} debería tener al menos {minimum_count} favoritos, pero tiene {actual_count}"
+            assert (
+                actual_count >= minimum_count
+            ), f"Usuario {user_id} debería tener al menos {minimum_count} favoritos, pero tiene {actual_count}"
 
         # 4. Contar favoritos por producto
         product_favourite_counts = {}
@@ -251,9 +258,7 @@ class TestFavouriteServiceE2E:
 
         # 5. Operaciones selectivas - eliminar algunos favoritos
         # Eliminar todos los favoritos del usuario 2
-        user_2_favourites = [
-            fav for fav in created_favourites if fav["userId"] == 2
-        ]
+        user_2_favourites = [fav for fav in created_favourites if fav["userId"] == 2]
 
         for favourite in user_2_favourites:
             delete_response = make_request(
@@ -278,19 +283,29 @@ class TestFavouriteServiceE2E:
 
         # Solo verificar que el endpoint sigue funcionando
         assert isinstance(remaining_favourites, list)
-        print(f"Favoritos restantes después de eliminación: {len(remaining_favourites)}")
+        print(
+            f"Favoritos restantes después de eliminación: {len(remaining_favourites)}"
+        )
 
         # 7. Verificar que el sistema mantiene datos de favoritos
         # Verificar que hay al menos algunos favoritos en el sistema
-        assert len(remaining_favourites) >= 1, "Debería haber al menos algunos favoritos en el sistema"
-        
+        assert (
+            len(remaining_favourites) >= 1
+        ), "Debería haber al menos algunos favoritos en el sistema"
+
         # Verificar que hay usuarios con favoritos
         user_ids_with_favourites = set(fav["userId"] for fav in remaining_favourites)
-        assert len(user_ids_with_favourites) >= 1, "Debería haber al menos un usuario con favoritos"
-        
+        assert (
+            len(user_ids_with_favourites) >= 1
+        ), "Debería haber al menos un usuario con favoritos"
+
         # Verificar que hay productos con favoritos
-        product_ids_with_favourites = set(fav["productId"] for fav in remaining_favourites)
-        assert len(product_ids_with_favourites) >= 1, "Debería haber al menos un producto con favoritos"
+        product_ids_with_favourites = set(
+            fav["productId"] for fav in remaining_favourites
+        )
+        assert (
+            len(product_ids_with_favourites) >= 1
+        ), "Debería haber al menos un producto con favoritos"
 
     def test_e2e_popular_product_favourites(self, cleanup_resources):
         """

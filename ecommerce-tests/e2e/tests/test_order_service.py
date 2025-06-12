@@ -301,7 +301,7 @@ class TestOrderServiceE2E:
                 "PUT", f"/api/orders/{order['orderId']}", data=update_data
             )
             assert update_response.status_code == 200
-            
+
             # Verificar que la respuesta de actualización es válida
             updated_order_response = update_response.json()
             assert "orderId" in updated_order_response
@@ -348,11 +348,11 @@ class TestOrderServiceE2E:
             check_response = make_request("GET", f"/api/orders/{order_id}")
             assert check_response.status_code == 200
             checked_order = check_response.json()
-            
+
             # Solo verificar que la orden existe y es accesible
             assert "orderId" in checked_order
             assert checked_order["orderId"] == order_id
-            
+
             # Verificar que los carritos también siguen siendo accesibles
             cart_id = created_carts[i]["cartId"]
             cart_check_response = make_request("GET", f"/api/carts/{cart_id}")

@@ -101,9 +101,7 @@ class TestPaymentServiceE2E:
         progress_payment["isPayed"] = True
         progress_payment["paymentStatus"] = "COMPLETED"
 
-        completed_response = make_request(
-            "PUT", "/api/payments", data=progress_payment
-        )
+        completed_response = make_request("PUT", "/api/payments", data=progress_payment)
         assert completed_response.status_code == 200
         completed_payment = completed_response.json()
         assert completed_payment["paymentStatus"] == "COMPLETED"
@@ -261,11 +259,7 @@ class TestPaymentServiceE2E:
 
         # 1. Crear múltiples pagos para procesamiento en lote
         order_ids = [1, 2, 3]
-        payment_statuses = [
-            "NOT_STARTED",
-            "IN_PROGRESS",
-            "NOT_STARTED"
-        ]
+        payment_statuses = ["NOT_STARTED", "IN_PROGRESS", "NOT_STARTED"]
 
         created_payments = []
         for i, order_id in enumerate(order_ids):

@@ -32,7 +32,7 @@ pip install -r requirements.txt
 
 ```bash
 # Verificar que todos los servicios estén disponibles
-python run_all_tests.py --connectivity
+python run_integration_tests.py --connectivity
 
 # Verificar conectividad individual
 python -c "from utils.api_utils import test_all_services_connectivity; test_all_services_connectivity()"
@@ -42,43 +42,43 @@ python -c "from utils.api_utils import test_all_services_connectivity; test_all_
 
 ```bash
 # Ejecutar todas las pruebas
-python run_all_tests.py
+python run_integration_tests.py
 
 # Con reporte HTML
-python run_all_tests.py --html
+python run_integration_tests.py --html
 
 # Con ejecución en paralelo
-python run_all_tests.py --parallel
+python run_integration_tests.py --parallel
 
 # Modo verboso
-python run_all_tests.py --verbose
+python run_integration_tests.py --verbose
 ```
 
 ### Ejecución por Categorías
 
 ```bash
 # Solo servicios de infraestructura
-python run_all_tests.py --service infrastructure
+python run_integration_tests.py --service infrastructure
 
 # Solo microservicios de negocio
-python run_all_tests.py --service business
+python run_integration_tests.py --service business
 
 # Atajos directos
-python run_all_tests.py --infrastructure
-python run_all_tests.py --business
+python run_integration_tests.py --infrastructure
+python run_integration_tests.py --business
 ```
 
 ### Ejecución por Servicio Individual
 
 ```bash
 # API Gateway
-python run_all_tests.py --service api-gateway
+python run_integration_tests.py --service api-gateway
 
 # User Service
-python run_all_tests.py --service user-service
+python run_integration_tests.py --service user-service
 
 # Product Service
-python run_all_tests.py --service product-service
+python run_integration_tests.py --service product-service
 
 # Otros servicios disponibles:
 # --service cloud-config
@@ -94,40 +94,40 @@ python run_all_tests.py --service product-service
 
 ```bash
 # Solo pruebas de conectividad/health
-python run_all_tests.py --connectivity-only
+python run_integration_tests.py --connectivity-only
 
 # Detener en el primer fallo
-python run_all_tests.py --fail-fast
+python run_integration_tests.py --fail-fast
 
 # Filtros por método específico
-python run_all_tests.py --method save
-python run_all_tests.py --method find
-python run_all_tests.py --method health
+python run_integration_tests.py --method save
+python run_integration_tests.py --method find
+python run_integration_tests.py --method health
 
 # URL personalizada del Gateway
-python run_all_tests.py --gateway-url http://localhost:9090
+python run_integration_tests.py --gateway-url http://localhost:9090
 
 # Combinando opciones
-python run_all_tests.py --service user-service --method save --html --verbose --fail-fast
+python run_integration_tests.py --service user-service --method save --html --verbose --fail-fast
 ```
 
 ### Atajos Rápidos
 
 ```bash
 # Verificación rápida de conectividad
-python run_all_tests.py --connectivity
+python run_integration_tests.py --connectivity
 
 # Pruebas de humo (solo health checks)
-python run_all_tests.py --smoke
+python run_integration_tests.py --smoke
 
 # Verificar autenticación únicamente
-python run_all_tests.py --auth
+python run_integration_tests.py --auth
 
 # Solo infraestructura
-python run_all_tests.py --infrastructure
+python run_integration_tests.py --infrastructure
 
 # Solo microservicios de negocio
-python run_all_tests.py --business
+python run_integration_tests.py --business
 ```
 
 ## 📁 Estructura de Archivos
@@ -150,7 +150,7 @@ integration/
 │   ├── test_favourite_service.py   # Pruebas del Favourite Service
 │   └── test_shipping_service.py    # Pruebas del Shipping Service
 ├── conftest.py                     # Configuración de pytest
-├── run_all_tests.py                # Script principal de ejecución
+├── run_integration_tests.py        # Script principal de ejecución
 └── README.md                       # Este archivo
 ```
 
@@ -244,7 +244,7 @@ Para uso en CI/CD:
 
 ```bash
 # Ejecución silenciosa con reporte
-python run_all_tests.py --html --fail-fast --connectivity-only
+python run_integration_tests.py --html --fail-fast --connectivity-only
 ```
 
 ## 📞 Soporte

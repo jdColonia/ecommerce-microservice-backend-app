@@ -10,14 +10,6 @@ CLOUD_CONFIG_URL = os.getenv("CLOUD_CONFIG_URL", "http://localhost:9296")
 API_GATEWAY_URL = os.getenv("API_GATEWAY_URL", "http://localhost:8222")
 PROXY_CLIENT_URL = os.getenv("PROXY_CLIENT_URL", "http://localhost:8900")
 
-# URLs de microservicios
-USER_SERVICE_URL = os.getenv("USER_SERVICE_URL", "http://localhost:8700")
-PRODUCT_SERVICE_URL = os.getenv("PRODUCT_SERVICE_URL", "http://localhost:8500")
-ORDER_SERVICE_URL = os.getenv("ORDER_SERVICE_URL", "http://localhost:8300")
-PAYMENT_SERVICE_URL = os.getenv("PAYMENT_SERVICE_URL", "http://localhost:8400")
-FAVOURITE_SERVICE_URL = os.getenv("FAVOURITE_SERVICE_URL", "http://localhost:8800")
-SHIPPING_SERVICE_URL = os.getenv("SHIPPING_SERVICE_URL", "http://localhost:8600")
-
 # Configuración de servicios
 SERVICES_CONFIG = {
     "service-discovery": {

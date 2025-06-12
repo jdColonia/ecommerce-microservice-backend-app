@@ -1,175 +1,253 @@
 """
-Pruebas de integración para el servicio de productos.
+Pruebas de integración para el Product Service.
 """
 
 import pytest
 import uuid
-from utils.api_utils import make_request, validate_response_schema
-from config.config import TEST_PRODUCT
+from utils.api_utils import make_request, set_current_service
 
-# Esquema esperado para un producto
-PRODUCT_SCHEMA = {
-    "id": int,
-    "name": str,
-    "description": str,
-    "price": float,
-    "stock": int,
-    "categoryId": int
-}
 
-class TestProductService:
+class TestProductServiceComplete:
     """
-    Pruebas para el servicio de productos.
+    Pruebas completas para el Product Service - categorías y productos.
     """
-    
+
+    def setup_method(self):
+        """Configurar el servicio para las pruebas."""
+        set_current_service("product-service")
+
+    @pytest.fixture(autouse=True)
+    def setup_and_cleanup(self):
+        self.created_category_ids = []
+        self.created_product_ids = []
+        yield
+        for product_id in self.created_product_ids:
+            try:
+                make_request("DELETE", f"api/products/{product_id}")
+            except:
+                pass
+        for category_id in self.created_category_ids:
+            try:
+                make_request("DELETE", f"api/categories/{category_id}")
+            except:
+                pass
+
+    # ==================== PRUEBAS PARA CATEGORÍAS ====================
+
     @pytest.fixture
-    def create_test_product(self):
-        """
-        Fixture para crear un producto de prueba.
-        """
-        # Generamos un nombre único para evitar conflictos
-        unique_name = f"Test Product {uuid.uuid4().hex[:8]}"
-        
-        product_data = {
-            "name": unique_name,
-            "description": TEST_PRODUCT["description"],
-            "price": TEST_PRODUCT["price"],
-            "stock": TEST_PRODUCT["stock"],
-            "categoryId": TEST_PRODUCT["categoryId"]
+    def create_test_category(self):
+        """Fixture para crear una categoría de prueba."""
+        unique_suffix = uuid.uuid4().hex[:8]
+        category_data = {
+            "categoryTitle": f"Test_Category_{unique_suffix}",
+            "imageUrl": "https://example.com/test-category.jpg",
         }
-        
-        # Creamos el producto
-        response = make_request('POST', '/api/products', data=product_data)
-        
-        # Verificamos que se haya creado correctamente
-        assert response.status_code == 201, f"Error al crear producto: {response.text}"
-        
+
+        response = make_request("POST", "/api/categories", data=category_data)
+        assert response.status_code == 200, f"Error al crear categoría: {response.text}"
+
+        created_category = response.json()
+        category_id = created_category.get("categoryId")
+
+        yield {"id": category_id, "data": created_category}
+
+        make_request("DELETE", f"/api/categories/{category_id}")
+
+    def test_category_find_all(self):
+        """Prueba para obtener todas las categorías."""
+        response = make_request("GET", "/api/categories")
+
+        assert response.status_code == 200
+        result = response.json()
+        assert "collection" in result
+        assert isinstance(result["collection"], list)
+
+    def test_category_find_by_id(self, create_test_category):
+        """Prueba para obtener categoría por ID."""
+        category = create_test_category
+        response = make_request("GET", f'/api/categories/{category["id"]}')
+
+        assert response.status_code == 200
+        result = response.json()
+        assert result["categoryId"] == category["id"]
+        assert result["categoryTitle"] == category["data"]["categoryTitle"]
+
+    def test_category_save(self):
+        """Prueba para crear una nueva categoría."""
+        unique_suffix = uuid.uuid4().hex[:8]
+        category_data = {
+            "categoryTitle": f"Save_Category_{unique_suffix}",
+            "imageUrl": "https://example.com/save-category.jpg",
+        }
+
+        response = make_request("POST", "/api/categories", data=category_data)
+
+        assert response.status_code == 200
+        result = response.json()
+        assert result["categoryTitle"] == category_data["categoryTitle"]
+        assert "categoryId" in result
+
+        make_request("DELETE", f'/api/categories/{result["categoryId"]}')
+
+    def test_category_update(self, create_test_category):
+        """Prueba para actualizar categoría."""
+        category = create_test_category
+        updated_data = category["data"].copy()
+        updated_data["categoryTitle"] = f"Updated_{uuid.uuid4().hex[:6]}"
+
+        response = make_request("PUT", "/api/categories", data=updated_data)
+
+        assert response.status_code == 200
+        result = response.json()
+        assert result["categoryTitle"] == updated_data["categoryTitle"]
+
+    def test_category_update_by_id(self, create_test_category):
+        """Prueba para actualizar categoría por ID."""
+        category = create_test_category
+        updated_data = {
+            "categoryTitle": f"UpdatedById_{uuid.uuid4().hex[:6]}",
+            "imageUrl": "https://example.com/updated-category.jpg",
+        }
+
+        response = make_request(
+            "PUT", f'/api/categories/{category["id"]}', data=updated_data
+        )
+
+        assert response.status_code == 200
+
+    def test_category_delete_by_id(self):
+        """Prueba para eliminar categoría."""
+        unique_suffix = uuid.uuid4().hex[:8]
+        category_data = {
+            "categoryTitle": f"Delete_Category_{unique_suffix}",
+            "imageUrl": "https://example.com/delete-category.jpg",
+        }
+
+        create_response = make_request("POST", "/api/categories", data=category_data)
+        assert create_response.status_code == 200
+        category_id = create_response.json()["categoryId"]
+
+        delete_response = make_request("DELETE", f"/api/categories/{category_id}")
+        assert delete_response.status_code == 200
+        assert delete_response.json() is True
+
+    # ==================== PRUEBAS PARA PRODUCTOS ====================
+
+    @pytest.fixture
+    def create_test_product(self, create_test_category):
+        """Fixture para crear un producto de prueba."""
+        category = create_test_category
+        unique_suffix = uuid.uuid4().hex[:8]
+        product_data = {
+            "productTitle": f"Test_Product_{unique_suffix}",
+            "imageUrl": "https://example.com/test-product.jpg",
+            "sku": f"SKU-{unique_suffix}",
+            "priceUnit": 99.99,
+            "quantity": 50,
+            "categoryDto": {"categoryId": category["id"]},
+        }
+
+        response = make_request("POST", "/api/products", data=product_data)
+        assert response.status_code == 200, f"Error al crear producto: {response.text}"
+
         created_product = response.json()
-        product_id = created_product.get('id')
-        
-        yield {
-            "id": product_id,
-            "name": unique_name,
-            "description": TEST_PRODUCT["description"],
-            "price": TEST_PRODUCT["price"],
-            "stock": TEST_PRODUCT["stock"],
-            "categoryId": TEST_PRODUCT["categoryId"]
-        }
-        
-        # Limpieza: eliminamos el producto
-        make_request('DELETE', f'/api/products/{product_id}')
-    
-    def test_get_all_products(self):
-        """
-        Prueba para obtener todos los productos.
-        """
-        response = make_request('GET', '/api/products')
-        
-        assert response.status_code == 200, f"Error: {response.text}"
-        assert isinstance(response.json(), list), "Se esperaba una lista de productos"
-        
-        # Si hay productos, validamos el esquema del primero
-        if len(response.json()) > 0:
-            assert validate_response_schema(response, PRODUCT_SCHEMA), "El esquema no es válido"
-    
-    def test_get_product_by_id(self, create_test_product):
-        """
-        Prueba para obtener un producto por ID.
-        """
+        product_id = created_product.get("productId")
+
+        yield {"id": product_id, "data": created_product}
+
+        make_request("DELETE", f"/api/products/{product_id}")
+
+    def test_product_find_all(self):
+        """Prueba para obtener todos los productos."""
+        response = make_request("GET", "/api/products")
+
+        assert response.status_code == 200
+        result = response.json()
+        assert "collection" in result
+        assert isinstance(result["collection"], list)
+
+    def test_product_find_by_id(self, create_test_product):
+        """Prueba para obtener producto por ID."""
         product = create_test_product
-        response = make_request('GET', f'/api/products/{product["id"]}')
-        
-        assert response.status_code == 200, f"Error: {response.text}"
-        assert response.json().get('id') == product['id'], "El ID no coincide"
-        assert validate_response_schema(response, PRODUCT_SCHEMA), "El esquema no es válido"
-    
-    def test_create_product(self):
-        """
-        Prueba para crear un nuevo producto.
-        """
-        unique_name = f"Create Product {uuid.uuid4().hex[:8]}"
+        response = make_request("GET", f'/api/products/{product["id"]}')
+
+        assert response.status_code == 200
+        result = response.json()
+        assert result["productId"] == product["id"]
+        assert result["productTitle"] == product["data"]["productTitle"]
+
+    def test_product_save(self, create_test_category):
+        """Prueba para crear un nuevo producto."""
+        category = create_test_category
+        unique_suffix = uuid.uuid4().hex[:8]
         product_data = {
-            "name": unique_name,
-            "description": "Producto para prueba de creación",
-            "price": 149.99,
-            "stock": 50,
-            "categoryId": TEST_PRODUCT["categoryId"]
+            "productTitle": f"Save_Product_{unique_suffix}",
+            "imageUrl": "https://example.com/save-product.jpg",
+            "sku": f"SAVE-SKU-{unique_suffix}",
+            "priceUnit": 199.99,
+            "quantity": 25,
+            "categoryDto": {"categoryId": category["id"]},
         }
-        
-        response = make_request('POST', '/api/products', data=product_data)
-        
-        assert response.status_code == 201, f"Error al crear producto: {response.text}"
-        created_product = response.json()
-        
-        # Limpieza
-        make_request('DELETE', f'/api/products/{created_product.get("id")}')
-    
-    def test_update_product(self, create_test_product):
-        """
-        Prueba para actualizar un producto existente.
-        """
+
+        response = make_request("POST", "/api/products", data=product_data)
+
+        assert response.status_code == 200
+        result = response.json()
+        assert result["productTitle"] == product_data["productTitle"]
+        assert result["sku"] == product_data["sku"]
+        assert result["priceUnit"] == product_data["priceUnit"]
+        assert "productId" in result
+
+        make_request("DELETE", f'/api/products/{result["productId"]}')
+
+    def test_product_update(self, create_test_product):
+        """Prueba para actualizar producto."""
         product = create_test_product
-        updated_price = product['price'] + 10.0
-        
-        update_data = {
-            "id": product['id'],
-            "name": product['name'],
-            "description": product['description'],
-            "price": updated_price,
-            "stock": product['stock'],
-            "categoryId": product['categoryId']
-        }
-        
-        # Actualizamos con el endpoint que requiere el ID en el cuerpo
-        response = make_request('PUT', '/api/products', data=update_data)
-        
-        assert response.status_code == 200, f"Error al actualizar producto: {response.text}"
-        assert response.json().get('price') == updated_price, "El precio no se actualizó correctamente"
-    
-    def test_update_product_by_id(self, create_test_product):
-        """
-        Prueba para actualizar un producto específico por ID.
-        """
+        updated_data = product["data"].copy()
+        updated_data["productTitle"] = f"Updated_Product_{uuid.uuid4().hex[:6]}"
+        updated_data["priceUnit"] = 149.99
+
+        response = make_request("PUT", "/api/products", data=updated_data)
+
+        assert response.status_code == 200
+        result = response.json()
+        assert result["productTitle"] == updated_data["productTitle"]
+        assert result["priceUnit"] == updated_data["priceUnit"]
+
+    def test_product_update_by_id(self, create_test_product):
+        """Prueba para actualizar producto por ID."""
         product = create_test_product
-        updated_stock = product['stock'] - 10
-        
-        update_data = {
-            "name": product['name'],
-            "description": product['description'],
-            "price": product['price'],
-            "stock": updated_stock,
-            "categoryId": product['categoryId']
+        updated_data = {
+            "productTitle": f"UpdatedById_Product_{uuid.uuid4().hex[:6]}",
+            "imageUrl": "https://example.com/updated-product.jpg",
+            "sku": product["data"]["sku"],
+            "priceUnit": 299.99,
+            "quantity": 75,
         }
-        
-        # Actualizamos con el endpoint que incluye el ID en la URL
-        response = make_request('PUT', f'/api/products/{product["id"]}', data=update_data)
-        
-        assert response.status_code == 200, f"Error al actualizar producto: {response.text}"
-        assert response.json().get('stock') == updated_stock, "El stock no se actualizó correctamente"
-    
-    def test_delete_product(self):
-        """
-        Prueba para eliminar un producto.
-        """
-        # Creamos un producto para luego eliminarlo
-        unique_name = f"Delete Product {uuid.uuid4().hex[:8]}"
+
+        response = make_request(
+            "PUT", f'/api/products/{product["id"]}', data=updated_data
+        )
+
+        assert response.status_code == 200
+
+    def test_product_delete_by_id(self, create_test_category):
+        """Prueba para eliminar producto."""
+        category = create_test_category
+        unique_suffix = uuid.uuid4().hex[:8]
         product_data = {
-            "name": unique_name,
-            "description": "Producto para prueba de eliminación",
-            "price": 79.99,
-            "stock": 25,
-            "categoryId": TEST_PRODUCT["categoryId"]
+            "productTitle": f"Delete_Product_{unique_suffix}",
+            "imageUrl": "https://example.com/delete-product.jpg",
+            "sku": f"DELETE-SKU-{unique_suffix}",
+            "priceUnit": 79.99,
+            "quantity": 10,
+            "categoryDto": {"categoryId": category["id"]},
         }
-        
-        create_response = make_request('POST', '/api/products', data=product_data)
-        assert create_response.status_code == 201, f"Error al crear producto: {create_response.text}"
-        
-        product_id = create_response.json().get('id')
-        
-        # Eliminamos el producto
-        delete_response = make_request('DELETE', f'/api/products/{product_id}')
-        assert delete_response.status_code == 204, f"Error al eliminar producto: {delete_response.text}"
-        
-        # Verificamos que ya no exista
-        get_response = make_request('GET', f'/api/products/{product_id}')
-        assert get_response.status_code == 404, "El producto no se eliminó correctamente"
+
+        create_response = make_request("POST", "/api/products", data=product_data)
+        assert create_response.status_code == 200
+        product_id = create_response.json()["productId"]
+
+        delete_response = make_request("DELETE", f"/api/products/{product_id}")
+        assert delete_response.status_code == 200
+        assert delete_response.json() is True

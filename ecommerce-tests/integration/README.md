@@ -1,102 +1,252 @@
-# Pruebas de Integración - Microservicios E-Commerce
+# Pruebas de Integración - Ecosistema de Microservicios
 
-Este directorio contiene pruebas de integración para la aplicación de microservicios de e-commerce. Las pruebas validan que los servicios interactúen correctamente entre sí a través del API Gateway.
+Este directorio contiene las pruebas de integración completas para todo el ecosistema de microservicios del e-commerce.
 
-## Estructura del Proyecto
+## 🏗️ Arquitectura de Servicios
 
-```
-integration-tests/
-│
-├── config/             # Configuración para las pruebas
-│   └── config.py       # Configuración global
-│
-├── utils/              # Utilidades para las pruebas
-│   └── api_utils.py    # Funciones de ayuda para interactuar con la API
-│
-├── tests/              # Archivos de prueba
-│   ├── test_user_service.py       # Pruebas para el servicio de usuarios
-│   ├── test_product_service.py    # Pruebas para el servicio de productos
-│   └── test_order_service.py      # Pruebas para el servicio de órdenes
-│
-├── conftest.py         # Configuración global para pytest
-└── run_tests.py        # Script para ejecutar las pruebas
-```
+### Servicios de Infraestructura
 
-## Requisitos
+- **API Gateway** (puerto 8080): Punto de entrada principal
+- **Service Discovery** (puerto 8761): Registro y descubrimiento de servicios
+- **Cloud Config** (puerto 9296): Gestión centralizada de configuración
+- **Proxy Client** (puerto 8900): Cliente proxy para comunicación entre servicios
 
-- Python 3.8 o superior
-- Entorno virtual (venv)
-- Dependencias: pytest, requests, pytest-html, pytest-xdist
+### Microservicios de Negocio
 
-## Configuración
+- **User Service** (puerto 8700): Gestión de usuarios
+- **Product Service** (puerto 8500): Gestión de productos y categorías
+- **Order Service** (puerto 8300): Gestión de carritos y órdenes
+- **Payment Service** (puerto 8400): Procesamiento de pagos
+- **Favourite Service** (puerto 8800): Gestión de favoritos
+- **Shipping Service** (puerto 8600): Gestión de envíos
 
-1. Activar el entorno virtual:
+## 🚀 Ejecución de Pruebas
 
-```bash
-cd integration-tests
-venv\Scripts\activate  # En Windows
-source venv/bin/activate  # En Unix/Linux
-```
-
-2. Instalar dependencias:
+### Prerrequisitos
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Configurar la URL del API Gateway en `config/config.py`:
-
-```python
-# URL base del API Gateway
-BASE_URL = "https://api-gateway.your-cluster.com"  # Reemplazar con la URL real
-```
-
-## Ejecución de Pruebas
-
-### Ejecutar todas las pruebas
+### Verificación de Conectividad
 
 ```bash
-python run_tests.py
+# Verificar que todos los servicios estén disponibles
+python run_all_tests.py --connectivity
+
+# Verificar conectividad individual
+python -c "from utils.api_utils import test_all_services_connectivity; test_all_services_connectivity()"
 ```
 
-### Ejecutar pruebas con salida detallada
+### Ejecución Completa
 
 ```bash
-python run_tests.py --verbose
+# Ejecutar todas las pruebas
+python run_all_tests.py
+
+# Con reporte HTML
+python run_all_tests.py --html
+
+# Con ejecución en paralelo
+python run_all_tests.py --parallel
+
+# Modo verboso
+python run_all_tests.py --verbose
 ```
 
-### Generar reporte HTML
+### Ejecución por Categorías
 
 ```bash
-python run_tests.py --html
+# Solo servicios de infraestructura
+python run_all_tests.py --service infrastructure
+
+# Solo microservicios de negocio
+python run_all_tests.py --service business
+
+# Atajos directos
+python run_all_tests.py --infrastructure
+python run_all_tests.py --business
 ```
 
-### Ejecutar pruebas en paralelo
+### Ejecución por Servicio Individual
 
 ```bash
-python run_tests.py --parallel
+# API Gateway
+python run_all_tests.py --service api-gateway
+
+# User Service
+python run_all_tests.py --service user-service
+
+# Product Service
+python run_all_tests.py --service product-service
+
+# Otros servicios disponibles:
+# --service cloud-config
+# --service service-discovery
+# --service proxy-client
+# --service order-service
+# --service payment-service
+# --service favourite-service
+# --service shipping-service
 ```
 
-### Ejecutar pruebas para un servicio específico
+### Opciones Avanzadas
 
 ```bash
-python run_tests.py --service user
-python run_tests.py --service product
-python run_tests.py --service order
+# Solo pruebas de conectividad/health
+python run_all_tests.py --connectivity-only
+
+# Detener en el primer fallo
+python run_all_tests.py --fail-fast
+
+# Filtros por método específico
+python run_all_tests.py --method save
+python run_all_tests.py --method find
+python run_all_tests.py --method health
+
+# URL personalizada del Gateway
+python run_all_tests.py --gateway-url http://localhost:9090
+
+# Combinando opciones
+python run_all_tests.py --service user-service --method save --html --verbose --fail-fast
 ```
 
-## Notas Adicionales
+### Atajos Rápidos
 
-- Las pruebas se ejecutan contra el API Gateway, que enruta las solicitudes a los servicios correspondientes.
-- Todas las pruebas crean sus propios datos de prueba y realizan limpieza después de la ejecución.
-- Se utiliza un token JWT para autenticación, obtenido en el inicio de la sesión de pruebas.
+```bash
+# Verificación rápida de conectividad
+python run_all_tests.py --connectivity
 
-## Troubleshooting
+# Pruebas de humo (solo health checks)
+python run_all_tests.py --smoke
 
-1. **Error de conexión**: Verifica que el API Gateway esté accesible desde el entorno de pruebas.
-2. **Error de autenticación**: Asegúrate de que las credenciales en `config.py` sean válidas.
-3. **Fallos en las pruebas**: Revisa los logs del servicio específico para obtener más detalles.
+# Verificar autenticación únicamente
+python run_all_tests.py --auth
 
-## Extensión
+# Solo infraestructura
+python run_all_tests.py --infrastructure
 
-Para añadir pruebas para más servicios, crea un nuevo archivo en el directorio `tests/` siguiendo el patrón `test_[servicio]_service.py` e implementa las pruebas correspondientes.
+# Solo microservicios de negocio
+python run_all_tests.py --business
+```
+
+## 📁 Estructura de Archivos
+
+```
+integration/
+├── config/
+│   └── config.py                   # Configuración de URLs y servicios
+├── utils/
+│   └── api_utils.py                # Utilidades para peticiones HTTP
+├── tests/
+│   ├── test_api_gateway.py         # Pruebas del API Gateway
+│   ├── test_cloud_config.py        # Pruebas del Cloud Config
+│   ├── test_service_discovery.py   # Pruebas del Service Discovery
+│   ├── test_proxy_client.py        # Pruebas del Proxy Client
+│   ├── test_user_service.py        # Pruebas del User Service
+│   ├── test_product_service.py     # Pruebas del Product Service
+│   ├── test_order_service.py       # Pruebas del Order Service
+│   ├── test_payment_service.py     # Pruebas del Payment Service
+│   ├── test_favourite_service.py   # Pruebas del Favourite Service
+│   └── test_shipping_service.py    # Pruebas del Shipping Service
+├── conftest.py                     # Configuración de pytest
+├── run_all_tests.py                # Script principal de ejecución
+└── README.md                       # Este archivo
+```
+
+## 🔧 Configuración
+
+### Variables de Entorno
+
+```bash
+# URLs de servicios de infraestructura
+export SERVICE_DISCOVERY_URL="http://localhost:8761"
+export CLOUD_CONFIG_URL="http://localhost:9296"
+export API_GATEWAY_URL="http://localhost:8080"
+export PROXY_CLIENT_URL="http://localhost:8900"
+
+# URLs de microservicios (automáticas vía Gateway)
+export USER_SERVICE_URL="http://localhost:8700"
+export PRODUCT_SERVICE_URL="http://localhost:8500"
+export ORDER_SERVICE_URL="http://localhost:8300"
+export PAYMENT_SERVICE_URL="http://localhost:8400"
+export FAVOURITE_SERVICE_URL="http://localhost:8800"
+export SHIPPING_SERVICE_URL="http://localhost:8600"
+```
+
+### Autenticación
+
+Las pruebas de microservicios de negocio requieren autenticación JWT que se obtiene automáticamente usando las credenciales configuradas en `config/config.py`.
+
+## 📊 Interpretación de Resultados
+
+### Códigos de Estado Esperados
+
+#### Servicios de Infraestructura
+
+- `200`: Servicio funcionando correctamente
+- `404`: Endpoints actuator no expuestos (normal en producción)
+
+#### Microservicios de Negocio
+
+- `200`: Operación exitosa
+- `401/403`: Requerida autenticación (normal)
+- `500`: Error interno del servicio
+
+### Reportes HTML
+
+Los reportes HTML incluyen:
+
+- Resumen ejecutivo de todas las pruebas
+- Detalles de cada prueba individual
+- Logs de peticiones HTTP
+- Tiempo de ejecución por prueba
+
+## 🐛 Resolución de Problemas
+
+### Servicios No Disponibles
+
+```bash
+# Verificar que los servicios estén ejecutándose
+docker ps
+# o
+docker-compose ps
+
+# Verificar puertos
+netstat -an | grep LISTEN
+```
+
+### Problemas de Autenticación
+
+```bash
+# Resetear token y volver a autenticar
+python -c "from utils.api_utils import reset_auth_token; reset_auth_token()"
+```
+
+### Timeouts de Conexión
+
+Ajustar `REQUEST_TIMEOUT` en `config/config.py` si los servicios tardan en responder.
+
+## 📈 Métricas y Monitoreo
+
+Las pruebas validan:
+
+- ✅ Conectividad de servicios
+- ✅ Endpoints de salud/actuator
+- ✅ Operaciones CRUD básicas
+- ✅ Autenticación y autorización
+- ✅ Formato de respuestas
+- ✅ Códigos de estado HTTP
+
+## 🔄 Integración Continua
+
+Para uso en CI/CD:
+
+```bash
+# Ejecución silenciosa con reporte
+python run_all_tests.py --html --fail-fast --connectivity-only
+```
+
+## 📞 Soporte
+
+Para reportar problemas o sugerir mejoras, consultar la documentación del proyecto principal.
